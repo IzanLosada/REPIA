@@ -1,7 +1,5 @@
 # Repia
 
-## Resum
-
 ## Base de dades
 
 **Usuaris:** Emmagatzema la informació dels usuaris de l'aplicació. Separar usuaris permet gestionar clients individuals i empreses, així com reutilitzar la seva informació en comandes.
