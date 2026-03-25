@@ -8,3 +8,5 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
+
+const googleProvider = new firebase.auth.GoogleAuthProvider();
