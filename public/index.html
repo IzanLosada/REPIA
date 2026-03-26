@@ -3,13 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <title>RePia</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -44,7 +42,6 @@
         line-height: 1.6;
       }
 
-      /* ── NOISE TEXTURE OVERLAY ── */
       body::before {
         content: '';
         position: fixed;
@@ -56,7 +53,6 @@
         opacity: 0.6;
       }
 
-      /* ── HEADER ── */
       header {
         position: relative;
         z-index: 10;
@@ -68,17 +64,8 @@
         background: linear-gradient(180deg, rgba(45,92,39,0.12) 0%, transparent 100%);
       }
 
-      header .logo-wrap {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      header .logo-wrap img {
-        height: 44px;
-        width: auto;
-        filter: drop-shadow(0 0 12px rgba(107,191,90,0.35));
-      }
+      header .logo-wrap { display: flex; align-items: center; gap: 14px; }
+      header .logo-wrap img { height: 44px; width: auto; filter: drop-shadow(0 0 12px rgba(107,191,90,0.35)); }
 
       header h1 {
         font-family: 'Syne', sans-serif;
@@ -89,9 +76,7 @@
         margin: 0;
       }
 
-      header h1 span {
-        color: var(--green-bright);
-      }
+      header h1 span { color: var(--green-bright); }
 
       header .tagline {
         margin-left: auto;
@@ -102,7 +87,45 @@
         text-transform: uppercase;
       }
 
-      /* ── GLOW RING ── */
+      .user-info {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        margin-left: auto;
+      }
+
+      .user-role-badge {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 20px;
+        border: 1px solid var(--green-dark);
+        color: var(--green-bright);
+        background: rgba(74,140,63,0.1);
+      }
+
+      .user-name {
+        font-size: 0.82rem;
+        color: var(--grey-2);
+      }
+
+      #btnLogout {
+        font-size: 0.75rem;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--grey-3);
+        padding: 5px 12px;
+        cursor: pointer;
+        transition: all 0.18s;
+      }
+
+      #btnLogout:hover { border-color: #e05555; color: #f5a0a0; }
+
       .glow-ring {
         position: fixed;
         top: -220px;
@@ -115,7 +138,6 @@
         z-index: 0;
       }
 
-      /* ── MAIN CONTAINER ── */
       .page-wrap {
         position: relative;
         z-index: 1;
@@ -127,7 +149,6 @@
         padding: 56px 24px 80px;
       }
 
-      /* ── CARD ── */
       .card-panel {
         width: 100%;
         max-width: 520px;
@@ -135,10 +156,7 @@
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 40px 44px;
-        box-shadow:
-          0 4px 24px rgba(0,0,0,0.45),
-          0 0 0 1px rgba(107,191,90,0.06),
-          inset 0 1px 0 rgba(255,255,255,0.04);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 0 0 1px rgba(107,191,90,0.06), inset 0 1px 0 rgba(255,255,255,0.04);
         animation: fadeUp 0.5s ease both;
       }
 
@@ -170,10 +188,7 @@
         flex-shrink: 0;
       }
 
-      /* ── FORM FIELDS ── */
-      .form-group {
-        margin-bottom: 20px;
-      }
+      .form-group { margin-bottom: 20px; }
 
       .form-group label {
         display: block;
@@ -205,11 +220,10 @@
         color: var(--white);
       }
 
-      .form-control::placeholder {
-        color: var(--grey-3);
-      }
+      .form-control::placeholder { color: var(--grey-3); }
 
-      /* ── BUTTONS ── */
+      textarea.form-control { resize: vertical; }
+
       .btn {
         font-family: 'DM Sans', sans-serif;
         font-weight: 500;
@@ -222,27 +236,27 @@
         border: none;
       }
 
-      .btn-default, #save, #login, #signup {
+      .btn-default, #login, #signup, #saveProd {
         background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
         color: #fff;
         border: 1px solid var(--green-mid);
         box-shadow: 0 2px 10px rgba(74,140,63,0.3);
       }
 
-      .btn-default:hover, #save:hover, #login:hover, #signup:hover {
+      .btn-default:hover, #login:hover, #signup:hover, #saveProd:hover {
         background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-bright) 100%);
         box-shadow: 0 4px 16px rgba(107,191,90,0.4);
         transform: translateY(-1px);
         color: #fff;
       }
 
-      .btn-outline-primary, #newUser {
+      .btn-outline-primary, #newUser, #tornarLogin, #cancelarEdicio {
         background: transparent;
         color: var(--green-bright);
         border: 1px solid var(--green-dark) !important;
       }
 
-      .btn-outline-primary:hover, #newUser:hover {
+      .btn-outline-primary:hover, #newUser:hover, #tornarLogin:hover, #cancelarEdicio:hover {
         background: rgba(74,140,63,0.12);
         border-color: var(--green-mid) !important;
         color: var(--green-light);
@@ -256,14 +270,42 @@
         margin-top: 8px;
       }
 
-      /* ── DIVIDER ── */
-      .form-divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 28px 0;
+      #loginGoogle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 22px;
+        background: var(--surface-3);
+        color: var(--grey-1);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.18s ease;
       }
 
-      /* ── ALERTS ── */
+      #loginGoogle:hover { background: var(--surface-2); border-color: var(--grey-2); color: var(--white); transform: translateY(-1px); }
+      #loginGoogle svg { flex-shrink: 0; }
+
+      .or-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 24px 0;
+        color: var(--grey-3);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+      .form-divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
       #alert {
         position: fixed;
         bottom: 32px;
@@ -286,24 +328,13 @@
         to   { opacity: 1; transform: translateX(0); }
       }
 
-      .alert-success {
-        background: rgba(45,92,39,0.85);
-        border-left-color: var(--green-bright);
-        color: var(--green-light);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      }
+      .alert-success { background: rgba(45,92,39,0.85); border-left-color: var(--green-bright); color: var(--green-light); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+      .alert-danger  { background: rgba(80,20,20,0.85); border-left-color: #e05555; color: #f5a0a0; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
 
-      .alert-danger {
-        background: rgba(80,20,20,0.85);
-        border-left-color: #e05555;
-        color: #f5a0a0;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      }
-
-      /* ── TABLE ── */
+      /* ── TAULA PRODUCTES EMPRESA ── */
       .table-section {
         width: 100%;
-        max-width: 860px;
+        max-width: 1000px;
         margin-top: 40px;
         animation: fadeUp 0.5s 0.1s ease both;
       }
@@ -319,21 +350,11 @@
         padding-left: 4px;
       }
 
-      .table-responsive {
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      }
+      .table-responsive { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 
-      table#listItems {
-        width: 100%;
-        border-collapse: collapse;
-        background: var(--surface-2);
-        margin: 0;
-      }
+      .prod-table { width: 100%; border-collapse: collapse; background: var(--surface-2); margin: 0; }
 
-      table#listItems thead th {
+      .prod-table thead th {
         background: var(--surface-3);
         color: var(--grey-2);
         font-family: 'Syne', sans-serif;
@@ -345,29 +366,39 @@
         border-bottom: 1px solid var(--border);
       }
 
-      table#listItems tbody tr {
-        border-bottom: 1px solid var(--border);
-        transition: background 0.15s;
-      }
+      .prod-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+      .prod-table tbody tr:last-child { border-bottom: none; }
+      .prod-table tbody tr:hover { background: var(--surface-3); }
+      .prod-table td { padding: 14px 20px; color: var(--grey-1); font-size: 0.88rem; vertical-align: middle; }
 
-      table#listItems tbody tr:last-child {
-        border-bottom: none;
-      }
-
-      table#listItems tbody tr:hover {
-        background: var(--surface-3);
-      }
-
-      table#listItems td {
-        padding: 14px 20px;
-        color: var(--grey-1);
-        font-size: 0.88rem;
-      }
-
-      /* action links inside table */
-      table#listItems td a,
-      table#listItems td button {
+      .badge-compradors {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(74,140,63,0.15);
+        border: 1px solid var(--green-dark);
         color: var(--green-bright);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .badge-cat {
+        display: inline-block;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        color: var(--grey-2);
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .preu-tag { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--green-light); font-size: 0.95rem; }
+
+      .btn-taula {
         background: none;
         border: none;
         cursor: pointer;
@@ -376,42 +407,133 @@
         padding: 4px 10px;
         border-radius: 6px;
         transition: background 0.15s, color 0.15s;
-        text-decoration: none;
       }
 
-      table#listItems td a:hover,
-      table#listItems td button:hover {
-        background: rgba(107,191,90,0.12);
-        color: var(--green-light);
+      .btn-taula-edit { color: var(--green-bright); }
+      .btn-taula-edit:hover { background: rgba(107,191,90,0.12); color: var(--green-light); }
+      .btn-taula-del { color: #e05555; }
+      .btn-taula-del:hover { background: rgba(224,85,85,0.12); color: #f5a0a0; }
+
+      /* ── CATÀLEG PARTICULAR ── */
+      .productes-grid {
+        width: 100%;
+        max-width: 1100px;
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        animation: fadeUp 0.5s 0.1s ease both;
       }
 
-      /* ── BOOTSTRAP OVERRIDES ── */
-      .col-form-label {
-        color: var(--grey-2);
-        font-size: 0.72rem;
-        font-weight: 500;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        padding-top: 12px;
+      .producte-card {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: transform 0.18s, box-shadow 0.18s;
       }
 
-      /* ── FOOTER ── */
-      footer {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        padding: 20px;
+      .producte-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
+
+      .producte-card-img {
+        width: 100%;
+        height: 160px;
+        background: var(--surface-3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--grey-3);
-        font-size: 0.72rem;
-        letter-spacing: 0.08em;
-        border-top: 1px solid var(--border);
+        font-size: 0.75rem;
+        overflow: hidden;
       }
 
-      /* ── RESPONSIVE ── */
+      .producte-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      .producte-card-body { padding: 18px 20px; }
+
+      .producte-card-body h4 {
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--white);
+        margin-bottom: 6px;
+      }
+
+      .producte-card-body p { font-size: 0.83rem; color: var(--grey-2); margin-bottom: 12px; line-height: 1.5; }
+
+      .producte-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-top: 1px solid var(--border);
+        background: var(--surface-3);
+      }
+
+      /* ── REGISTRE: TIPUS ── */
+      .tipus-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+
+      .tipus-btn {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface-3);
+        color: var(--grey-2);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        text-align: center;
+      }
+
+      .tipus-btn.actiu { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%); border-color: var(--green-mid); color: #fff; box-shadow: 0 2px 10px rgba(74,140,63,0.3); }
+      .tipus-btn:not(.actiu):hover { border-color: var(--green-mid); color: var(--green-light); background: rgba(74,140,63,0.08); }
+
+      .foto-upload-wrap { display: flex; align-items: center; gap: 16px; }
+
+      .foto-preview {
+        width: 56px; height: 56px; border-radius: 50%;
+        border: 1px solid var(--border); background: var(--surface-3);
+        object-fit: cover; flex-shrink: 0; display: flex;
+        align-items: center; justify-content: center; overflow: hidden;
+      }
+
+      .foto-preview svg { opacity: 0.3; }
+      .foto-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+      .btn-upload {
+        background: var(--surface-3); border: 1px dashed var(--border);
+        border-radius: 8px; color: var(--grey-2);
+        font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+        padding: 8px 16px; cursor: pointer; transition: all 0.18s;
+      }
+
+      .btn-upload:hover { border-color: var(--green-mid); color: var(--green-light); background: rgba(74,140,63,0.06); }
+
+      .cert-upload-wrap {
+        background: var(--surface-3); border: 1px dashed var(--border);
+        border-radius: 8px; padding: 18px 16px; display: flex;
+        align-items: center; gap: 14px; cursor: pointer; transition: all 0.18s;
+      }
+
+      .cert-upload-wrap:hover { border-color: var(--green-mid); background: rgba(74,140,63,0.06); }
+      .cert-upload-wrap svg { flex-shrink: 0; opacity: 0.5; }
+      .cert-upload-info { flex: 1; }
+      .cert-upload-info p { font-size: 0.82rem; color: var(--grey-2); margin: 0; line-height: 1.4; }
+      .cert-upload-info span { font-size: 0.72rem; color: var(--grey-3); }
+      .cert-nom-fitxer { font-size: 0.78rem; color: var(--green-bright); margin-top: 8px; display: none; }
+
+      .label-opcional { font-size: 0.65rem; color: var(--grey-3); font-weight: 400; letter-spacing: 0.06em; text-transform: none; margin-left: 6px; }
+
+      footer { position: relative; z-index: 1; text-align: center; padding: 20px; color: var(--grey-3); font-size: 0.72rem; letter-spacing: 0.08em; border-top: 1px solid var(--border); }
+
       @media (max-width: 600px) {
         header { padding: 20px 24px; }
-        header .tagline { display: none; }
         .card-panel { padding: 28px 24px; }
+        .productes-grid { grid-template-columns: 1fr; }
+        .form-grid-2 { grid-template-columns: 1fr !important; }
       }
     </style>
   </head>
@@ -421,15 +543,19 @@
 
     <header>
       <div class="logo-wrap">
-        <img src="logo.png" alt="RePia logo" />
-        <h1>Re<span>Pia</span></h1>
+        <img src="img/logo.png" alt="Logo RePia" />
       </div>
-      <span class="tagline">Gestió d'ítems</span>
+      <span class="tagline" id="headerTagline">Gestió d'ítems</span>
+      <div class="user-info" id="userInfo">
+        <span class="user-role-badge" id="userRoleBadge"></span>
+        <span class="user-name" id="userName"></span>
+        <button id="btnLogout">Tancar sessió</button>
+      </div>
     </header>
 
     <div class="page-wrap">
 
-      <!-- LOGIN FORM -->
+      <!-- FORMULARI D'ACCÉS -->
       <div class="card-panel" id="loginForm">
         <h2>Accés</h2>
         <div class="form-group">
@@ -441,21 +567,34 @@
           <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" />
         </div>
         <div class="btn-actions">
-          <button type="button" id="newUser" class="btn btn-outline-primary">
-            Registrar nou usuari
-          </button>
-          <button type="button" id="login" class="btn btn-default">
-            Entrar
-          </button>
+          <button type="button" id="newUser" class="btn btn-outline-primary">Registrar nou usuari</button>
+          <button type="button" id="login" class="btn btn-default">Entrar</button>
         </div>
       </div>
 
-      <!-- SIGNUP FORM -->
-      <div class="card-panel" id="signupForm" style="display: none">
+      <!-- FORMULARI DE REGISTRE -->
+      <div class="card-panel" id="signupForm" style="display:none; max-width:560px;">
         <h2>Registre</h2>
+
+        <button type="button" id="loginGoogle">
+          <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+          Continuar amb Google
+        </button>
+        <div class="or-divider">o</div>
+
         <div class="form-group">
-          <label for="signupEmail">Correu</label>
+          <label for="signupEmail">Correu electrònic</label>
           <input type="email" class="form-control" id="signupEmail" placeholder="usuari@exemple.com" />
+        </div>
+        <div class="form-group">
+          <label for="signupUsername">Nom d'usuari</label>
+          <input type="text" class="form-control" id="signupUsername" placeholder="El teu nom d'usuari" />
         </div>
         <div class="form-group">
           <label for="signupPassword">Contrasenya</label>
@@ -465,125 +604,610 @@
           <label for="signupPasswordConfirm">Confirmar contrasenya</label>
           <input type="password" class="form-control" id="signupPasswordConfirm" placeholder="••••••••" />
         </div>
+
+        <hr class="form-divider" />
+
+        <div class="form-group">
+          <label for="signupFotoPerfil">Foto de perfil <span class="label-opcional">(opcional)</span></label>
+          <div class="foto-upload-wrap">
+            <div class="foto-preview" id="fotoPreviewWrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+              <img id="fotoPreviewImg" alt="Previsualització" />
+            </div>
+            <div>
+              <button type="button" class="btn-upload" onclick="document.getElementById('signupFotoPerfil').click()">Triar imatge</button>
+              <input type="file" id="signupFotoPerfil" accept="image/*" style="display:none" />
+              <p style="font-size:0.72rem;color:var(--grey-3);margin-top:6px;">JPG, PNG o WebP · màx. 2 MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="signupAdreca">Adreça</label>
+          <input type="text" class="form-control" id="signupAdreca" placeholder="Carrer, número, pis..." />
+        </div>
+        <div class="form-group">
+          <label for="signupCiutat">Ciutat</label>
+          <input type="text" class="form-control" id="signupCiutat" placeholder="Barcelona, Vic, Girona..." />
+        </div>
+        <div class="form-group">
+          <label for="signupTelefon">Telèfon</label>
+          <input type="tel" class="form-control" id="signupTelefon" placeholder="+34 600 000 000" />
+        </div>
+
+        <hr class="form-divider" />
+
+        <div class="form-group">
+          <label>Tipus de compte</label>
+          <div class="tipus-selector">
+            <button type="button" class="tipus-btn actiu" id="btnParticular" onclick="seleccionarTipus('particular')">Cliente</button>
+            <button type="button" class="tipus-btn" id="btnEmpresa" onclick="seleccionarTipus('empresa')">Empresa</button>
+          </div>
+        </div>
+
+        <div class="form-group" id="grupCertificat" style="display:none;">
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="signupNomEmpresa">Nom de l'empresa</label>
+            <input type="text" class="form-control" id="signupNomEmpresa" placeholder="Raó social de l'empresa..." />
+          </div>
+          <label>Certificat d'empresa</label>
+          <div class="cert-upload-wrap" onclick="document.getElementById('signupCertificat').click()">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="1.4">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            <div class="cert-upload-info">
+              <p>Fes clic per adjuntar el certificat</p>
+              <span>PDF · màx. 5 MB</span>
+            </div>
+          </div>
+          <input type="file" id="signupCertificat" accept=".pdf" style="display:none" />
+          <p class="cert-nom-fitxer" id="certNomFitxer"></p>
+        </div>
+
         <div class="btn-actions">
-          <button type="button" id="signup" class="btn btn-default">
-            Enviar
-          </button>
+          <button type="button" id="tornarLogin" class="btn btn-outline-primary">← Tornar a l'accés</button>
+          <button type="button" id="signup" class="btn btn-default">Crear compte</button>
         </div>
       </div>
 
-      <!-- ITEMS FORM -->
-      <div class="card-panel" id="itemsForm" style="display: none">
-        <h2>Nou ítem</h2>
+      <!-- ══════════════════════════════════════ -->
+      <!-- VISTA EMPRESA                          -->
+      <!-- ══════════════════════════════════════ -->
+
+      <div class="card-panel" id="empresaForm" style="display:none; max-width:620px;">
+        <h2 id="empresaFormTitol">Nou producte</h2>
         <div class="form-group">
-          <label for="title">Títol</label>
-          <input type="text" class="form-control" id="title" placeholder="Títol de l'ítem..." />
+          <label for="prodTitol">Nom del producte</label>
+          <input type="text" class="form-control" id="prodTitol" placeholder="Nom del producte..." />
         </div>
         <div class="form-group">
-          <label for="content">Contingut</label>
-          <input type="text" class="form-control" id="content" placeholder="Descripció o contingut..." />
+          <label for="prodDescripcio">Descripció</label>
+          <textarea class="form-control" id="prodDescripcio" rows="3" placeholder="Descriu el producte..."></textarea>
         </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="form-grid-2">
+          <div class="form-group">
+            <label for="prodPreu">Preu (€)</label>
+            <input type="number" class="form-control" id="prodPreu" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label for="prodStock">Stock (unitats)</label>
+            <input type="number" class="form-control" id="prodStock" placeholder="0" min="0" step="1" />
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-grid-2">
+          <div class="form-group">
+            <label for="prodCategoria">Categoria</label>
+            <input type="text" class="form-control" id="prodCategoria" placeholder="Ex: Electrònica, Roba..." />
+          </div>
+          <div class="form-group" style="display:none;">
+            <label for="prodCompradors">Usuaris que han comprat</label>
+            <input type="number" class="form-control" id="prodCompradors" placeholder="0" min="0" step="1" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="prodImatge">URL de la imatge <span class="label-opcional">(opcional)</span></label>
+          <input type="url" class="form-control" id="prodImatge" placeholder="https://exemple.com/imatge.jpg" />
+        </div>
+        <p style="font-size:0.82rem;color:var(--grey-2);margin:-4px 0 18px;line-height:1.5;">
+          En aquesta vista nomÃ©s veus els teus productes i pots afegir-ne o editar-ne de manera simple.
+        </p>
         <div class="btn-actions">
-          <button type="button" id="save" class="btn btn-default">
-            Guardar
-          </button>
+          <button type="button" id="cancelarEdicio" class="btn btn-outline-primary" style="display:none;">Cancel·lar</button>
+          <button type="button" id="saveProd" class="btn btn-default">Guardar producte</button>
         </div>
-        <input type="hidden" id="elementId" />
+        <input type="hidden" id="prodId" />
       </div>
 
-      <!-- TABLE SECTION -->
-      <div class="table-section" id="tableSection" style="display:none">
-        <h3>Ítems registrats</h3>
+      <div class="table-section" id="empresaTableSection" style="display:none;">
+        <h3>Els meus productes</h3>
         <div class="table-responsive">
-          <table class="table table-hover" id="listItems" style="display: none"></table>
+          <table class="prod-table" id="listProdEmpresa"></table>
         </div>
       </div>
+
+      <!-- ══════════════════════════════════════ -->
+      <!-- VISTA PARTICULAR: catàleg             -->
+      <!-- ══════════════════════════════════════ -->
+
+      <div id="particularHeader" style="display:none; width:100%; max-width:1100px;">
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--grey-2);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:24px;padding-left:4px;">Catàleg de productes</h3>
+        <p style="color:var(--grey-2);font-size:0.9rem;line-height:1.6;max-width:720px;margin:-10px 0 24px 4px;">
+          Compra amb una quantitat simple i l'estoc baixarÃ  segons el que compris abans d'anar als punts de recollida.
+        </p>
+      </div>
+      <div class="productes-grid" id="productesCataleg" style="display:none;"></div>
+      <p id="catalogBuit" style="display:none;color:var(--grey-3);font-size:0.88rem;margin-top:40px;">No hi ha productes disponibles de moment.</p>
 
     </div>
 
-    <!-- ALERT -->
     <div id="alert" role="alert"></div>
-
     <footer>RePia &nbsp;·&nbsp; Gestió sostenible</footer>
 
     <script language="javascript" src="js/config.js"></script>
     <script language="javascript" src="js/firestore.js"></script>
-    <script language="javascript" src="js/items.js"></script>
     <script language="javascript">
 
-      function showAlert(text, type) {
-        const alertEl = document.getElementById("alert");
-        alertEl.innerText = text;
-        alertEl.className = `alert ${type}`;
-        alertEl.style.display = "block";
-        setTimeout(() => {
-          alertEl.style.display = "none";
-        }, 2000);
+      const usuaris  = db.collection("usuaris");
+      const productes = db.collection("items");
+
+      let tipusCompte = 'particular';
+      let rolActual   = null;
+      let uidActual   = null;
+      let creantUsuari = false;
+
+      /* ── REGISTRE: selector particular / empresa ── */
+      function seleccionarTipus(tipus) {
+        tipusCompte = tipus;
+        document.getElementById('btnParticular').classList.toggle('actiu', tipus === 'particular');
+        document.getElementById('btnEmpresa').classList.toggle('actiu',    tipus === 'empresa');
+        document.getElementById('grupCertificat').style.display = tipus === 'empresa' ? 'block' : 'none';
       }
 
-      window.addEventListener("load", async () => {
-        await loadItems();
+      document.getElementById('signupFotoPerfil').addEventListener('change', function () {
+        const fitxer = this.files[0];
+        if (!fitxer) return;
+        const lector = new FileReader();
+        lector.onload = e => {
+          const img = document.getElementById('fotoPreviewImg');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.querySelector('.foto-preview svg').style.display = 'none';
+        };
+        lector.readAsDataURL(fitxer);
       });
 
-      document.getElementById("login").addEventListener("click", async () => {
-        const email = document.getElementById("loginEmail").value;
-        const password = document.getElementById("loginPassword").value;
+      document.getElementById('signupCertificat').addEventListener('change', function () {
+        const fitxer = this.files[0];
+        const nomEl  = document.getElementById('certNomFitxer');
+        nomEl.textContent = fitxer ? fitxer.name : '';
+        nomEl.style.display = fitxer ? 'block' : 'none';
+      });
+
+      /* ── ALERTES ── */
+      function showAlert(text, type) {
+        const el = document.getElementById("alert");
+        el.innerText   = text;
+        el.className   = `alert ${type}`;
+        el.style.display = "block";
+        setTimeout(() => { el.style.display = "none"; }, 2500);
+      }
+
+      function authDisponibleEnEntornActual() {
+        return ['http:', 'https:', 'chrome-extension:'].includes(window.location.protocol);
+      }
+
+      function missatgeErrorAuth(error) {
+        if (!error || !error.code) return "Error d'autenticació";
+
+        const missatges = {
+          'auth/invalid-email': "El correu no tÃ© un format vÃ lid",
+          'auth/email-already-in-use': "Aquest correu ja estÃ  registrat",
+          'auth/weak-password': "La contrasenya Ã©s massa feble",
+          'auth/wrong-password': "Contrasenya incorrecta",
+          'auth/user-not-found': "No existeix cap usuari amb aquest correu",
+          'auth/popup-closed-by-user': "Has tancat la finestra de Google abans d'acabar",
+          'auth/operation-not-supported-in-this-environment': "Obre l'app amb http://localhost o https, no amb file://",
+          'auth/web-storage-unsupported': "El navegador no permet l'emmagatzematge web necessari per iniciar sessiÃ³"
+        };
+
+        return missatges[error.code] || error.message || "Error d'autenticació";
+      }
+
+      /* ── AMAGAR TOT ── */
+      function amagarTot() {
+        ['loginForm','signupForm','empresaForm','empresaTableSection',
+         'particularHeader','productesCataleg','catalogBuit'].forEach(id => {
+          document.getElementById(id).style.display = 'none';
+        });
+      }
+
+      async function comprarProducte(id) {
+        const inputQuantitat = document.getElementById(`qty-${id}`);
+        if (!inputQuantitat) return;
+
+        const quantitat = parseInt(inputQuantitat.value, 10);
+        if (isNaN(quantitat) || quantitat < 1) {
+          showAlert("Introdueix una quantitat vàlida", "alert-danger");
+          return;
+        }
+
         try {
-          await auth.signInWithEmailAndPassword(email, password);
-          showAlert("Usuari autenticat", "alert-success");
-          document.getElementById("loginForm").style.display = "none";
-          document.getElementById("itemsForm").style.display = "block";
-          document.getElementById("listItems").style.display = "table";
-          document.getElementById("tableSection").style.display = "block";
-        } catch (error) {
-          showAlert("Error d'autenticació", "alert-danger");
+          const snap = await selectById(productes, id);
+          if (!snap.exists) {
+            showAlert("Aquest producte ja no està disponible", "alert-danger");
+            await carregarCataleg();
+            return;
+          }
+
+          const data = snap.data();
+          const stockActual = data.stock != null ? Number(data.stock) : 0;
+          if (quantitat > stockActual) {
+            showAlert("No hi ha prou stock per aquesta compra", "alert-danger");
+            inputQuantitat.value = stockActual > 0 ? stockActual : 1;
+            await carregarCataleg();
+            return;
+          }
+
+          const stockNou = stockActual - quantitat;
+          const compradorsNous = (Number(data.compradors) || 0) + 1;
+
+          await updateById(productes, id, {
+            stock: stockNou,
+            compradors: compradorsNous
+          });
+
+          sessionStorage.setItem('repiaCompra', JSON.stringify({
+            producto: data.title || 'Producto',
+            cantidad: quantitat,
+            stockRestante: stockNou
+          }));
+
+          await carregarCataleg();
+          showAlert("Felicitats per la compra. Ara et portarem als punts de recollida", "alert-success");
+          setTimeout(() => {
+            window.location.href = 'puntos-recogida.html';
+          }, 1700);
+        } catch (e) {
+          showAlert("Error al completar la compra", "alert-danger");
+        }
+      }
+
+      /* ── CAPÇALERA AUTENTICADA ── */
+      function mostrarCapcaleraUsuari(rol, nom) {
+        document.getElementById('headerTagline').style.display = 'none';
+        const ui = document.getElementById('userInfo');
+        ui.style.display = 'flex';
+        document.getElementById('userRoleBadge').textContent = rol === 'empresa' ? 'Empresa' : 'Cliente';
+        document.getElementById('userName').textContent = nom || '';
+      }
+
+      /* ── VISTA EMPRESA ── */
+      async function mostrarVistaEmpresa() {
+        amagarTot();
+        document.getElementById('empresaForm').style.display = 'block';
+        document.getElementById('empresaTableSection').style.display = 'block';
+        await carregarProductesEmpresa();
+      }
+
+      /* ── VISTA PARTICULAR ── */
+      async function mostrarVistaParticular() {
+        amagarTot();
+        document.getElementById('particularHeader').style.display = 'block';
+        await carregarCataleg();
+      }
+
+      /* ── LOGIN SUCCESS: llegeix rol de Firestore ── */
+      async function onLoginSuccess(uid) {
+        uidActual = uid;
+        try {
+          const docSnap = await usuaris.doc(uid).get();
+          if (docSnap.exists) {
+            const data = docSnap.data();
+            rolActual = data.rol || 'particular';
+            mostrarCapcaleraUsuari(rolActual, data.nomEmpresa || data.username || '');
+          } else {
+            rolActual = 'particular';
+            mostrarCapcaleraUsuari(rolActual, auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
+          }
+        } catch (e) {
+          rolActual = 'particular';
+          mostrarCapcaleraUsuari(rolActual, auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
+        }
+        if (rolActual === 'empresa') {
+          await mostrarVistaEmpresa();
+        } else {
+          await mostrarVistaParticular();
+        }
+      }
+
+      /* ═══════════════════════════════════════════ */
+      /* EMPRESA: CRUD PRODUCTES                     */
+      /* ═══════════════════════════════════════════ */
+
+      async function carregarProductesEmpresa() {
+        const docs  = await selectWhere(productes, 'empresaUid', '==', uidActual);
+        const taula = document.getElementById('listProdEmpresa');
+        taula.innerHTML = `
+          <thead><tr>
+            <th>Producte</th>
+            <th>Categoria</th>
+            <th>Preu</th>
+            <th>Stock</th>
+            <th>Compradors</th>
+            <th></th>
+          </tr></thead><tbody id="prodTbody"></tbody>`;
+
+        const tbody = document.getElementById('prodTbody');
+        if (docs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="padding:24px 20px;color:var(--grey-3);font-size:0.85rem;text-align:center;">Encara no tens productes. Afegeix-ne un dalt!</td></tr>`;
+          return;
+        }
+        docs.forEach(doc => {
+          const d  = doc.data();
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>
+              <strong style="color:var(--white);display:block;">${d.title || ''}</strong>
+              <span style="font-size:0.78rem;color:var(--grey-3);">${(d.content||'').substring(0,55)}${d.content&&d.content.length>55?'…':''}</span>
+            </td>
+            <td><span class="badge-cat">${d.categoria || '—'}</span></td>
+            <td><span class="preu-tag">${d.preu != null ? Number(d.preu).toFixed(2)+' €' : '—'}</span></td>
+            <td>${d.stock != null ? d.stock : '—'}</td>
+            <td><span class="badge-compradors">👥 ${d.compradors || 0}</span></td>
+            <td style="white-space:nowrap;">
+              <button class="btn-taula btn-taula-edit" onclick="editarProducte('${doc.id}')">Editar</button>
+              <button class="btn-taula btn-taula-del"  onclick="eliminarProducte('${doc.id}')">Eliminar</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.getElementById('saveProd').addEventListener('click', async () => {
+        const id          = document.getElementById('prodId').value;
+        const titol       = document.getElementById('prodTitol').value.trim();
+        const desc        = document.getElementById('prodDescripcio').value.trim();
+        const preu        = parseFloat(document.getElementById('prodPreu').value);
+        const stock       = parseInt(document.getElementById('prodStock').value);
+        const categoria   = document.getElementById('prodCategoria').value.trim();
+        const compradors  = parseInt(document.getElementById('prodCompradors').value) || 0;
+        const imatge      = document.getElementById('prodImatge').value.trim();
+
+        if (!titol)               { showAlert("El nom del producte és obligatori", "alert-danger"); return; }
+        if (isNaN(preu) || preu < 0)  { showAlert("Introdueix un preu vàlid", "alert-danger"); return; }
+        if (isNaN(stock) || stock < 0){ showAlert("Introdueix un stock vàlid", "alert-danger"); return; }
+
+        const docData = { title: titol, content: desc, preu, stock, categoria, compradors, imatge, empresaUid: uidActual };
+
+        try {
+          if (!id) {
+            await add(productes, docData);
+            showAlert("Producte afegit correctament", "alert-success");
+          } else {
+            await updateById(productes, id, docData);
+            showAlert("Producte actualitzat correctament", "alert-success");
+          }
+          netejarFormulariProducte();
+          await carregarProductesEmpresa();
+        } catch (e) {
+          showAlert("Error al guardar el producte", "alert-danger");
         }
       });
 
+      async function editarProducte(id) {
+        const snap = await selectById(productes, id);
+        if (!snap.exists) return;
+        const d = snap.data();
+        document.getElementById('prodId').value           = id;
+        document.getElementById('prodTitol').value        = d.title || '';
+        document.getElementById('prodDescripcio').value   = d.content || '';
+        document.getElementById('prodPreu').value         = d.preu != null ? d.preu : '';
+        document.getElementById('prodStock').value        = d.stock != null ? d.stock : '';
+        document.getElementById('prodCategoria').value    = d.categoria || '';
+        document.getElementById('prodCompradors').value   = d.compradors || 0;
+        document.getElementById('prodImatge').value       = d.imatge || '';
+        document.getElementById('empresaFormTitol').textContent = 'Editar producte';
+        document.getElementById('cancelarEdicio').style.display = 'inline-flex';
+        document.getElementById('empresaForm').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      async function eliminarProducte(id) {
+        if (!confirm('Segur que vols eliminar aquest producte?')) return;
+        try {
+          await deleteById(productes, id);
+          showAlert("Producte eliminat", "alert-success");
+          await carregarProductesEmpresa();
+        } catch (e) {
+          showAlert("Error al eliminar el producte", "alert-danger");
+        }
+      }
+
+      document.getElementById('cancelarEdicio').addEventListener('click', netejarFormulariProducte);
+
+      function netejarFormulariProducte() {
+        ['prodId','prodTitol','prodDescripcio','prodPreu','prodStock','prodCategoria','prodImatge'].forEach(id => {
+          document.getElementById(id).value = '';
+        });
+        document.getElementById('prodCompradors').value = 0;
+        document.getElementById('empresaFormTitol').textContent = 'Nou producte';
+        document.getElementById('cancelarEdicio').style.display = 'none';
+      }
+
+      /* ═══════════════════════════════════════════ */
+      /* PARTICULAR: CATÀLEG                         */
+      /* ═══════════════════════════════════════════ */
+
+      async function carregarCataleg() {
+        const docs = await selectAll(productes);
+        const grid = document.getElementById('productesCataleg');
+        grid.innerHTML = '';
+        if (docs.length === 0) {
+          grid.style.display = 'none';
+          document.getElementById('catalogBuit').style.display = 'block';
+          return;
+        }
+        grid.style.display = 'grid';
+        document.getElementById('catalogBuit').style.display = 'none';
+        docs.forEach(doc => {
+          const d    = doc.data();
+          const stock = d.stock != null ? Number(d.stock) : 0;
+          const card = document.createElement('div');
+          card.className = 'producte-card';
+          card.innerHTML = `
+            <div class="producte-card-img">
+              ${d.imatge ? `<img src="${d.imatge}" alt="${d.title}" onerror="this.parentElement.innerHTML='Sense imatge'" />` : 'Sense imatge'}
+            </div>
+            <div class="producte-card-body">
+              <h4>${d.title || 'Sense nom'}</h4>
+              ${d.categoria ? `<span class="badge-cat" style="margin-bottom:8px;display:inline-block;">${d.categoria}</span>` : ''}
+              <p>${d.content || ''}</p>
+            </div>
+            <div class="producte-card-footer" style="flex-direction:column;align-items:stretch;gap:12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <span class="preu-tag">${d.preu != null ? Number(d.preu).toFixed(2)+' €' : '—'}</span>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+                  <span style="font-size:0.75rem;color:var(--grey-3);">Stock: ${stock}</span>
+                  <span class="badge-compradors">👥 ${d.compradors || 0}</span>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:80px 1fr;gap:10px;">
+                <input type="number" class="form-control" id="qty-${doc.id}" min="1" max="${stock > 0 ? stock : 1}" value="1" ${stock <= 0 ? 'disabled' : ''} />
+                <button type="button" class="btn btn-default" onclick="comprarProducte('${doc.id}')" ${stock <= 0 ? 'disabled style="opacity:0.55;cursor:not-allowed;"' : ''}>
+                  ${stock > 0 ? 'Comprar' : 'Sense stock'}
+                </button>
+              </div>
+            </div>`;
+          grid.appendChild(card);
+        });
+      }
+
+      /* ═══════════════════════════════════════════ */
+      /* AUTH                                        */
+      /* ═══════════════════════════════════════════ */
+
+      if (!authDisponibleEnEntornActual()) {
+        setTimeout(() => {
+          showAlert("Firebase Auth necessita obrir la web amb http://localhost o https", "alert-danger");
+        }, 250);
+      }
+
+      if (authDisponibleEnEntornActual()) {
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            if (creantUsuari) return;
+            if (uidActual !== user.uid) {
+              await onLoginSuccess(user.uid);
+            }
+            return;
+          }
+
+          rolActual = null;
+          uidActual = null;
+          amagarTot();
+          document.getElementById('loginForm').style.display = 'block';
+          document.getElementById('userInfo').style.display  = 'none';
+          document.getElementById('headerTagline').style.display = '';
+        });
+      }
+
+      document.getElementById("loginGoogle").addEventListener("click", async () => {
+        if (!authDisponibleEnEntornActual()) {
+          showAlert("Obre l'app amb http://localhost o https per usar Firebase Auth", "alert-danger");
+          return;
+        }
+        try {
+          await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        } catch (e) {
+          showAlert(missatgeErrorAuth(e), "alert-danger");
+        }
+      });
+
+      document.getElementById("login").addEventListener("click", async () => {
+        const email    = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        if (!authDisponibleEnEntornActual()) {
+          showAlert("Obre l'app amb http://localhost o https per usar Firebase Auth", "alert-danger");
+          return;
+        }
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+        } catch (e) {
+          showAlert(missatgeErrorAuth(e), "alert-danger");
+        }
+      });
+
+      document.getElementById("btnLogout").addEventListener("click", async () => {
+        sessionStorage.removeItem('repiaCompra');
+        await auth.signOut();
+        rolActual = null;
+        uidActual = null;
+        amagarTot();
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('userInfo').style.display  = 'none';
+        document.getElementById('headerTagline').style.display = '';
+      });
+
+      document.getElementById("tornarLogin").addEventListener("click", () => {
+        document.getElementById("signupForm").style.display = "none";
+        document.getElementById("loginForm").style.display  = "block";
+      });
+
       document.getElementById("newUser").addEventListener("click", () => {
-        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("loginForm").style.display  = "none";
         document.getElementById("signupForm").style.display = "block";
       });
 
       document.getElementById("signup").addEventListener("click", async () => {
-        const email = document.getElementById("signupEmail").value;
-        const password = document.getElementById("signupPassword").value;
+        const email           = document.getElementById("signupEmail").value.trim();
+        const username        = document.getElementById("signupUsername").value.trim();
+        const password        = document.getElementById("signupPassword").value;
         const passwordConfirm = document.getElementById("signupPasswordConfirm").value;
+        const adreca          = document.getElementById("signupAdreca").value.trim();
+        const ciutat          = document.getElementById("signupCiutat").value.trim();
+        const telefon         = document.getElementById("signupTelefon").value.trim();
+        const certificat      = document.getElementById("signupCertificat").files[0];
+        const nomEmpresa      = tipusCompte === 'empresa' ? document.getElementById("signupNomEmpresa").value.trim() : '';
 
-        if (!email || email.indexOf("@") < 1) {
-          showAlert("Email incorrecte", "alert-danger"); return;
+        if (!authDisponibleEnEntornActual()) {
+          showAlert("Obre l'app amb http://localhost o https per crear comptes", "alert-danger");
+          return;
         }
-        if (!password) {
-          showAlert("La contrasenya és obligatòria", "alert-danger"); return;
-        }
-        if (password.length < 8) {
-          showAlert("La contrasenya ha de tenir una longitud mínima de 8 caràcters", "alert-danger"); return;
-        }
-        if (password !== passwordConfirm) {
-          showAlert("Les contrasenyes no coincideixen", "alert-danger"); return;
-        }
+
+        if (!email || email.indexOf("@") < 1)                          { showAlert("Correu electrònic incorrecte", "alert-danger"); return; }
+        if (!username || username.length < 3)                          { showAlert("El nom d'usuari ha de tenir almenys 3 caràcters", "alert-danger"); return; }
+        if (!password)                                                  { showAlert("La contrasenya és obligatòria", "alert-danger"); return; }
+        if (password.length < 8)                                       { showAlert("La contrasenya ha de tenir una longitud mínima de 8 caràcters", "alert-danger"); return; }
+        if (password !== passwordConfirm)                              { showAlert("Les contrasenyes no coincideixen", "alert-danger"); return; }
+        if (!adreca)                                                    { showAlert("L'adreça és obligatòria", "alert-danger"); return; }
+        if (!ciutat)                                                    { showAlert("La ciutat és obligatòria", "alert-danger"); return; }
+        if (!telefon)                                                   { showAlert("El telèfon és obligatori", "alert-danger"); return; }
+        if (tipusCompte === 'empresa' && !nomEmpresa)                   { showAlert("El nom de l'empresa és obligatori", "alert-danger"); return; }
+        if (tipusCompte === 'empresa' && !certificat)                  { showAlert("Has d'adjuntar el certificat d'empresa", "alert-danger"); return; }
+
+        creantUsuari = true;
 
         try {
-          await auth.createUserWithEmailAndPassword(email, password);
+          const cred = await auth.createUserWithEmailAndPassword(email, password);
+          await usuaris.doc(cred.user.uid).set({
+            username:   username.trim(),
+            email,
+            adreca,
+            ciutat,
+            telefon,
+            rol:        tipusCompte,
+            nomEmpresa: nomEmpresa.trim()
+          });
+          creantUsuari = false;
           showAlert("Usuari creat correctament", "alert-success");
-          document.getElementById("loginForm").style.display = "block";
-          document.getElementById("signupForm").style.display = "none";
-        } catch (error) {
-          showAlert("Error al intentar crear l'usuari", "alert-danger");
+          await onLoginSuccess(cred.user.uid);
+        } catch (e) {
+          creantUsuari = false;
+          showAlert(missatgeErrorAuth(e), "alert-danger");
         }
       });
 
-      document.getElementById("save").addEventListener("click", async () => {
-        const id = document.getElementById("elementId").value;
-        const title = document.getElementById("title").value;
-        const content = document.getElementById("content").value;
-        const doc = { title, content };
-        if (!id) {
-          await addItem(doc);
-        } else {
-          await updateItem(id, doc);
-        }
-      });
     </script>
   </body>
 </html>
