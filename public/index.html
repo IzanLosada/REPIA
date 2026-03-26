@@ -566,6 +566,7 @@
           <label for="loginPassword">Contrasenya</label>
           <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" />
         </div>
+
         <div class="btn-actions">
           <button type="button" id="newUser" class="btn btn-outline-primary">Registrar nou usuari</button>
           <button type="button" id="login" class="btn btn-default">Entrar</button>
@@ -639,7 +640,7 @@
 
         <hr class="form-divider" />
 
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>Tipus de compte</label>
           <div class="tipus-selector">
             <button type="button" class="tipus-btn actiu" id="btnParticular" onclick="seleccionarTipus('particular')">Cliente</button>
@@ -665,6 +666,10 @@
           </div>
           <input type="file" id="signupCertificat" accept=".pdf" style="display:none" />
           <p class="cert-nom-fitxer" id="certNomFitxer"></p>
+        </div>
+
+        <div class="helper-note" style="margin-top:0;">
+          Tots els usuaris tindran la mateixa interfície: podran pujar productes, editar només els seus i comprar des del catàleg.
         </div>
 
         <div class="btn-actions">
@@ -753,7 +758,7 @@
       const usuaris  = db.collection("usuaris");
       const productes = db.collection("items");
 
-      let tipusCompte = 'particular';
+      let tipusCompte = 'usuari';
       let rolActual   = null;
       let uidActual   = null;
       let creantUsuari = false;
@@ -865,6 +870,7 @@
             stockRestante: stockNou
           }));
 
+          await carregarProductesEmpresa();
           await carregarCataleg();
           showAlert("Felicitats per la compra. Ara et portarem als punts de recollida", "alert-success");
           setTimeout(() => {
@@ -876,51 +882,43 @@
       }
 
       /* ── CAPÇALERA AUTENTICADA ── */
-      function mostrarCapcaleraUsuari(rol, nom) {
+      function mostrarCapcaleraUsuari(nom) {
         document.getElementById('headerTagline').style.display = 'none';
         const ui = document.getElementById('userInfo');
         ui.style.display = 'flex';
-        document.getElementById('userRoleBadge').textContent = rol === 'empresa' ? 'Empresa' : 'Cliente';
+        document.getElementById('userRoleBadge').textContent = 'Usuari';
         document.getElementById('userName').textContent = nom || '';
       }
 
-      /* ── VISTA EMPRESA ── */
-      async function mostrarVistaEmpresa() {
+      /* ── VISTA ÚNICA ── */
+      async function mostrarVistaUsuari() {
         amagarTot();
         document.getElementById('empresaForm').style.display = 'block';
         document.getElementById('empresaTableSection').style.display = 'block';
-        await carregarProductesEmpresa();
-      }
-
-      /* ── VISTA PARTICULAR ── */
-      async function mostrarVistaParticular() {
-        amagarTot();
         document.getElementById('particularHeader').style.display = 'block';
+        document.getElementById('productesCataleg').style.display = 'grid';
+        await carregarProductesEmpresa();
         await carregarCataleg();
       }
 
-      /* ── LOGIN SUCCESS: llegeix rol de Firestore ── */
+      /* ── LOGIN SUCCESS ── */
       async function onLoginSuccess(uid) {
         uidActual = uid;
         try {
           const docSnap = await usuaris.doc(uid).get();
           if (docSnap.exists) {
             const data = docSnap.data();
-            rolActual = data.rol || 'particular';
-            mostrarCapcaleraUsuari(rolActual, data.nomEmpresa || data.username || '');
+            rolActual = 'usuari';
+            mostrarCapcaleraUsuari(data.username || data.email || '');
           } else {
-            rolActual = 'particular';
-            mostrarCapcaleraUsuari(rolActual, auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
+            rolActual = 'usuari';
+            mostrarCapcaleraUsuari(auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
           }
         } catch (e) {
-          rolActual = 'particular';
-          mostrarCapcaleraUsuari(rolActual, auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
+          rolActual = 'usuari';
+          mostrarCapcaleraUsuari(auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
         }
-        if (rolActual === 'empresa') {
-          await mostrarVistaEmpresa();
-        } else {
-          await mostrarVistaParticular();
-        }
+        await mostrarVistaUsuari();
       }
 
       /* ═══════════════════════════════════════════ */
@@ -979,7 +977,17 @@
         if (isNaN(preu) || preu < 0)  { showAlert("Introdueix un preu vàlid", "alert-danger"); return; }
         if (isNaN(stock) || stock < 0){ showAlert("Introdueix un stock vàlid", "alert-danger"); return; }
 
-        const docData = { title: titol, content: desc, preu, stock, categoria, compradors, imatge, empresaUid: uidActual };
+        const docData = {
+          title: titol,
+          content: desc,
+          preu,
+          stock,
+          categoria,
+          compradors,
+          imatge,
+          empresaUid: uidActual,
+          ownerUid: uidActual
+        };
 
         try {
           if (!id) {
@@ -991,6 +999,7 @@
           }
           netejarFormulariProducte();
           await carregarProductesEmpresa();
+          await carregarCataleg();
         } catch (e) {
           showAlert("Error al guardar el producte", "alert-danger");
         }
@@ -1000,6 +1009,10 @@
         const snap = await selectById(productes, id);
         if (!snap.exists) return;
         const d = snap.data();
+        if (d.empresaUid !== uidActual && d.ownerUid !== uidActual) {
+          showAlert("Només pots editar els teus productes", "alert-danger");
+          return;
+        }
         document.getElementById('prodId').value           = id;
         document.getElementById('prodTitol').value        = d.title || '';
         document.getElementById('prodDescripcio').value   = d.content || '';
@@ -1014,11 +1027,19 @@
       }
 
       async function eliminarProducte(id) {
+        const snap = await selectById(productes, id);
+        if (!snap.exists) return;
+        const d = snap.data();
+        if (d.empresaUid !== uidActual && d.ownerUid !== uidActual) {
+          showAlert("Només pots eliminar els teus productes", "alert-danger");
+          return;
+        }
         if (!confirm('Segur que vols eliminar aquest producte?')) return;
         try {
           await deleteById(productes, id);
           showAlert("Producte eliminat", "alert-success");
           await carregarProductesEmpresa();
+          await carregarCataleg();
         } catch (e) {
           showAlert("Error al eliminar el producte", "alert-danger");
         }
@@ -1167,8 +1188,6 @@
         const adreca          = document.getElementById("signupAdreca").value.trim();
         const ciutat          = document.getElementById("signupCiutat").value.trim();
         const telefon         = document.getElementById("signupTelefon").value.trim();
-        const certificat      = document.getElementById("signupCertificat").files[0];
-        const nomEmpresa      = tipusCompte === 'empresa' ? document.getElementById("signupNomEmpresa").value.trim() : '';
 
         if (!authDisponibleEnEntornActual()) {
           showAlert("Obre l'app amb http://localhost o https per crear comptes", "alert-danger");
@@ -1183,8 +1202,6 @@
         if (!adreca)                                                    { showAlert("L'adreça és obligatòria", "alert-danger"); return; }
         if (!ciutat)                                                    { showAlert("La ciutat és obligatòria", "alert-danger"); return; }
         if (!telefon)                                                   { showAlert("El telèfon és obligatori", "alert-danger"); return; }
-        if (tipusCompte === 'empresa' && !nomEmpresa)                   { showAlert("El nom de l'empresa és obligatori", "alert-danger"); return; }
-        if (tipusCompte === 'empresa' && !certificat)                  { showAlert("Has d'adjuntar el certificat d'empresa", "alert-danger"); return; }
 
         creantUsuari = true;
 
@@ -1196,8 +1213,7 @@
             adreca,
             ciutat,
             telefon,
-            rol:        tipusCompte,
-            nomEmpresa: nomEmpresa.trim()
+            rol:        'usuari'
           });
           creantUsuari = false;
           showAlert("Usuari creat correctament", "alert-success");
