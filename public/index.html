@@ -1,1229 +1,881 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RePia</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-
     <style>
-      :root {
-        --black:        #0a0c0a;
-        --surface-1:    #111410;
-        --surface-2:    #181c16;
-        --surface-3:    #1f241c;
-        --border:       #2a3227;
-        --green-dark:   #2d5c27;
-        --green-mid:    #4a8c3f;
-        --green-bright: #6bbf5a;
-        --green-light:  #90d47f;
-        --white:        #f0f4ef;
-        --grey-1:       #c8d4c5;
-        --grey-2:       #7a8f76;
-        --grey-3:       #3d4e3a;
+      * {
+        box-sizing: border-box;
       }
 
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-      html, body {
-        height: 100%;
-        background-color: var(--black);
-        color: var(--white);
-        font-family: 'DM Sans', sans-serif;
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-        background-size: 180px;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0.6;
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #222;
       }
 
       header {
-        position: relative;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 28px 48px 24px;
-        border-bottom: 1px solid var(--border);
-        background: linear-gradient(180deg, rgba(45,92,39,0.12) 0%, transparent 100%);
+        background: #2f7d32;
+        color: white;
+        padding: 20px;
       }
 
-      header .logo-wrap { display: flex; align-items: center; gap: 14px; }
-      header .logo-wrap img { height: 44px; width: auto; filter: drop-shadow(0 0 12px rgba(107,191,90,0.35)); }
-
       header h1 {
-        font-family: 'Syne', sans-serif;
-        font-weight: 800;
-        font-size: 1.9rem;
-        letter-spacing: -0.02em;
-        color: var(--white);
+        margin: 0 0 6px;
+        font-size: 28px;
+      }
+
+      header p {
         margin: 0;
       }
 
-      header h1 span { color: var(--green-bright); }
-
-      header .tagline {
-        margin-left: auto;
-        font-size: 0.75rem;
-        font-weight: 300;
-        color: var(--grey-2);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
+      .header-top {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
       }
 
-      .user-info {
+      #userInfo {
         display: none;
         align-items: center;
         gap: 12px;
-        margin-left: auto;
       }
 
-      .user-role-badge {
-        font-size: 0.65rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        padding: 3px 10px;
-        border-radius: 20px;
-        border: 1px solid var(--green-dark);
-        color: var(--green-bright);
-        background: rgba(74,140,63,0.1);
+      #userInfo button {
+        width: auto;
       }
 
-      .user-name {
-        font-size: 0.82rem;
-        color: var(--grey-2);
+      main {
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 16px 40px;
       }
 
-      #btnLogout {
-        font-size: 0.75rem;
-        font-family: 'DM Sans', sans-serif;
-        font-weight: 500;
-        background: transparent;
-        border: 1px solid var(--border);
+      .panel {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .panel h2,
+      .panel h3 {
+        margin-top: 0;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        font: inherit;
+        padding: 10px;
+        border: 1px solid #bbb;
         border-radius: 6px;
-        color: var(--grey-3);
-        padding: 5px 12px;
-        cursor: pointer;
-        transition: all 0.18s;
+        margin-bottom: 14px;
       }
 
-      #btnLogout:hover { border-color: #e05555; color: #f5a0a0; }
-
-      .glow-ring {
-        position: fixed;
-        top: -220px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, rgba(74,140,63,0.14) 0%, transparent 70%);
-        pointer-events: none;
-        z-index: 0;
+      button {
+        font: inherit;
       }
 
-      .page-wrap {
-        position: relative;
-        z-index: 1;
-        min-height: calc(100vh - 97px);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 56px 24px 80px;
+      textarea {
+        min-height: 90px;
+        resize: vertical;
       }
 
-      .card-panel {
-        width: 100%;
-        max-width: 520px;
-        background: var(--surface-2);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 40px 44px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 0 0 1px rgba(107,191,90,0.06), inset 0 1px 0 rgba(255,255,255,0.04);
-        animation: fadeUp 0.5s ease both;
-      }
-
-      @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(18px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-
-      .card-panel h2 {
-        font-family: 'Syne', sans-serif;
-        font-weight: 700;
-        font-size: 1.15rem;
-        color: var(--grey-1);
-        margin-bottom: 28px;
-        letter-spacing: 0.01em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .card-panel h2::before {
-        content: '';
-        display: block;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green-bright);
-        box-shadow: 0 0 8px var(--green-bright);
-        flex-shrink: 0;
-      }
-
-      .form-group { margin-bottom: 20px; }
-
-      .form-group label {
-        display: block;
-        font-size: 0.72rem;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--grey-2);
-        margin-bottom: 8px;
-      }
-
-      .form-control {
-        width: 100%;
-        background: var(--surface-3);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 11px 15px;
-        color: var(--white);
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.9rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        outline: none;
-      }
-
-      .form-control:focus {
-        border-color: var(--green-mid);
-        box-shadow: 0 0 0 3px rgba(74,140,63,0.2);
-        background: var(--surface-3);
-        color: var(--white);
-      }
-
-      .form-control::placeholder { color: var(--grey-3); }
-
-      textarea.form-control { resize: vertical; }
-
-      .btn {
-        font-family: 'DM Sans', sans-serif;
-        font-weight: 500;
-        font-size: 0.85rem;
-        letter-spacing: 0.04em;
-        border-radius: 8px;
-        padding: 10px 22px;
-        cursor: pointer;
-        transition: all 0.18s ease;
+      button {
+        padding: 10px 14px;
         border: none;
-      }
-
-      .btn-default, #login, #signup, #saveProd {
-        background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
-        color: #fff;
-        border: 1px solid var(--green-mid);
-        box-shadow: 0 2px 10px rgba(74,140,63,0.3);
-      }
-
-      .btn-default:hover, #login:hover, #signup:hover, #saveProd:hover {
-        background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-bright) 100%);
-        box-shadow: 0 4px 16px rgba(107,191,90,0.4);
-        transform: translateY(-1px);
-        color: #fff;
-      }
-
-      .btn-outline-primary, #newUser, #tornarLogin, #cancelarEdicio {
-        background: transparent;
-        color: var(--green-bright);
-        border: 1px solid var(--green-dark) !important;
-      }
-
-      .btn-outline-primary:hover, #newUser:hover, #tornarLogin:hover, #cancelarEdicio:hover {
-        background: rgba(74,140,63,0.12);
-        border-color: var(--green-mid) !important;
-        color: var(--green-light);
-        transform: translateY(-1px);
-      }
-
-      .btn-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 8px;
-      }
-
-      #loginGoogle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-        padding: 10px 22px;
-        background: var(--surface-3);
-        color: var(--grey-1);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 500;
+        border-radius: 6px;
         cursor: pointer;
-        transition: all 0.18s ease;
       }
 
-      #loginGoogle:hover { background: var(--surface-2); border-color: var(--grey-2); color: var(--white); transform: translateY(-1px); }
-      #loginGoogle svg { flex-shrink: 0; }
+      .btn-green {
+        background: #2f7d32;
+        color: white;
+      }
 
-      .or-divider {
+      .btn-gray {
+        background: #e5e5e5;
+        color: #222;
+      }
+
+      .btn-red {
+        background: #c62828;
+        color: white;
+      }
+
+      .actions {
         display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 24px 0;
-        color: var(--grey-3);
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        gap: 10px;
       }
 
-      .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+      .actions button {
+        width: auto;
+      }
 
-      .form-divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background: #f0f0f0;
+      }
+
+      .catalogo {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background: #eee;
+      }
+
+      .card-body {
+        padding: 14px;
+      }
+
+      .card-body h4 {
+        margin: 0 0 8px;
+      }
+
+      .price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2f7d32;
+      }
+
+      .small {
+        color: #666;
+        font-size: 14px;
+      }
 
       #alert {
-        position: fixed;
-        bottom: 32px;
-        right: 32px;
-        z-index: 9999;
-        min-width: 260px;
-        max-width: 360px;
-        padding: 14px 20px;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        font-weight: 500;
         display: none;
-        animation: slideIn 0.3s ease;
-        border-left: 3px solid transparent;
-        backdrop-filter: blur(8px);
-      }
-
-      @keyframes slideIn {
-        from { opacity: 0; transform: translateX(20px); }
-        to   { opacity: 1; transform: translateX(0); }
-      }
-
-      .alert-success { background: rgba(45,92,39,0.85); border-left-color: var(--green-bright); color: var(--green-light); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-      .alert-danger  { background: rgba(80,20,20,0.85); border-left-color: #e05555; color: #f5a0a0; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-
-      /* ── TAULA PRODUCTES EMPRESA ── */
-      .table-section {
-        width: 100%;
-        max-width: 1000px;
-        margin-top: 40px;
-        animation: fadeUp 0.5s 0.1s ease both;
-      }
-
-      .table-section h3 {
-        font-family: 'Syne', sans-serif;
-        font-weight: 700;
-        font-size: 0.85rem;
-        color: var(--grey-2);
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        margin-bottom: 16px;
-        padding-left: 4px;
-      }
-
-      .table-responsive { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-
-      .prod-table { width: 100%; border-collapse: collapse; background: var(--surface-2); margin: 0; }
-
-      .prod-table thead th {
-        background: var(--surface-3);
-        color: var(--grey-2);
-        font-family: 'Syne', sans-serif;
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        padding: 14px 20px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .prod-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-      .prod-table tbody tr:last-child { border-bottom: none; }
-      .prod-table tbody tr:hover { background: var(--surface-3); }
-      .prod-table td { padding: 14px 20px; color: var(--grey-1); font-size: 0.88rem; vertical-align: middle; }
-
-      .badge-compradors {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        background: rgba(74,140,63,0.15);
-        border: 1px solid var(--green-dark);
-        color: var(--green-bright);
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 3px 10px;
-        border-radius: 20px;
-      }
-
-      .badge-cat {
-        display: inline-block;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid var(--border);
-        color: var(--grey-2);
-        font-size: 0.7rem;
-        padding: 2px 8px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
-
-      .preu-tag { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--green-light); font-size: 0.95rem; }
-
-      .btn-taula {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 0.82rem;
-        font-weight: 500;
-        padding: 4px 10px;
-        border-radius: 6px;
-        transition: background 0.15s, color 0.15s;
-      }
-
-      .btn-taula-edit { color: var(--green-bright); }
-      .btn-taula-edit:hover { background: rgba(107,191,90,0.12); color: var(--green-light); }
-      .btn-taula-del { color: #e05555; }
-      .btn-taula-del:hover { background: rgba(224,85,85,0.12); color: #f5a0a0; }
-
-      /* ── CATÀLEG PARTICULAR ── */
-      .productes-grid {
-        width: 100%;
-        max-width: 1100px;
-        margin-top: 40px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        animation: fadeUp 0.5s 0.1s ease both;
-      }
-
-      .producte-card {
-        background: var(--surface-2);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        overflow: hidden;
-        transition: transform 0.18s, box-shadow 0.18s;
-      }
-
-      .producte-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
-
-      .producte-card-img {
-        width: 100%;
-        height: 160px;
-        background: var(--surface-3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--grey-3);
-        font-size: 0.75rem;
-        overflow: hidden;
-      }
-
-      .producte-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-      .producte-card-body { padding: 18px 20px; }
-
-      .producte-card-body h4 {
-        font-family: 'Syne', sans-serif;
-        font-weight: 700;
-        font-size: 1rem;
-        color: var(--white);
-        margin-bottom: 6px;
-      }
-
-      .producte-card-body p { font-size: 0.83rem; color: var(--grey-2); margin-bottom: 12px; line-height: 1.5; }
-
-      .producte-card-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 20px;
-        border-top: 1px solid var(--border);
-        background: var(--surface-3);
-      }
-
-      /* ── REGISTRE: TIPUS ── */
-      .tipus-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-
-      .tipus-btn {
-        flex: 1;
-        padding: 10px 16px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        max-width: 320px;
+        padding: 12px 14px;
         border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--surface-3);
-        color: var(--grey-2);
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.18s ease;
+        color: white;
+      }
+
+      .ok {
+        background: #2f7d32;
+      }
+
+      .error {
+        background: #c62828;
+      }
+
+      footer {
         text-align: center;
+        color: #666;
+        padding: 24px 16px 40px;
       }
 
-      .tipus-btn.actiu { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%); border-color: var(--green-mid); color: #fff; box-shadow: 0 2px 10px rgba(74,140,63,0.3); }
-      .tipus-btn:not(.actiu):hover { border-color: var(--green-mid); color: var(--green-light); background: rgba(74,140,63,0.08); }
+      @media (max-width: 700px) {
+        .row,
+        .header-top {
+          grid-template-columns: 1fr;
+          display: block;
+        }
 
-      .foto-upload-wrap { display: flex; align-items: center; gap: 16px; }
+        #userInfo {
+          margin-top: 12px;
+        }
 
-      .foto-preview {
-        width: 56px; height: 56px; border-radius: 50%;
-        border: 1px solid var(--border); background: var(--surface-3);
-        object-fit: cover; flex-shrink: 0; display: flex;
-        align-items: center; justify-content: center; overflow: hidden;
-      }
+        .actions {
+          flex-direction: column;
+        }
 
-      .foto-preview svg { opacity: 0.3; }
-      .foto-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
-
-      .btn-upload {
-        background: var(--surface-3); border: 1px dashed var(--border);
-        border-radius: 8px; color: var(--grey-2);
-        font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
-        padding: 8px 16px; cursor: pointer; transition: all 0.18s;
-      }
-
-      .btn-upload:hover { border-color: var(--green-mid); color: var(--green-light); background: rgba(74,140,63,0.06); }
-
-      .cert-upload-wrap {
-        background: var(--surface-3); border: 1px dashed var(--border);
-        border-radius: 8px; padding: 18px 16px; display: flex;
-        align-items: center; gap: 14px; cursor: pointer; transition: all 0.18s;
-      }
-
-      .cert-upload-wrap:hover { border-color: var(--green-mid); background: rgba(74,140,63,0.06); }
-      .cert-upload-wrap svg { flex-shrink: 0; opacity: 0.5; }
-      .cert-upload-info { flex: 1; }
-      .cert-upload-info p { font-size: 0.82rem; color: var(--grey-2); margin: 0; line-height: 1.4; }
-      .cert-upload-info span { font-size: 0.72rem; color: var(--grey-3); }
-      .cert-nom-fitxer { font-size: 0.78rem; color: var(--green-bright); margin-top: 8px; display: none; }
-
-      .label-opcional { font-size: 0.65rem; color: var(--grey-3); font-weight: 400; letter-spacing: 0.06em; text-transform: none; margin-left: 6px; }
-
-      footer { position: relative; z-index: 1; text-align: center; padding: 20px; color: var(--grey-3); font-size: 0.72rem; letter-spacing: 0.08em; border-top: 1px solid var(--border); }
-
-      @media (max-width: 600px) {
-        header { padding: 20px 24px; }
-        .card-panel { padding: 28px 24px; }
-        .productes-grid { grid-template-columns: 1fr; }
-        .form-grid-2 { grid-template-columns: 1fr !important; }
+        .actions button {
+          width: 100%;
+        }
       }
     </style>
   </head>
-
   <body>
-    <div class="glow-ring"></div>
-
     <header>
-      <div class="logo-wrap">
-        <img src="img/logo.png" alt="Logo RePia" />
-      </div>
-      <span class="tagline" id="headerTagline">Gestió d'ítems</span>
-      <div class="user-info" id="userInfo">
-        <span class="user-role-badge" id="userRoleBadge"></span>
-        <span class="user-name" id="userName"></span>
-        <button id="btnLogout">Tancar sessió</button>
+      <div class="header-top">
+        <div>
+          <h1>RePia</h1>
+          <p id="headerTagline">Gestion simple de productos</p>
+        </div>
+        <div id="userInfo">
+          <span id="userName"></span>
+          <button id="btnLogout" class="btn-gray">Cerrar sesion</button>
+        </div>
       </div>
     </header>
 
-    <div class="page-wrap">
+    <main>
+      <section class="panel" id="loginForm">
+        <h2>Iniciar sesion</h2>
+        <label for="loginEmail">Correo</label>
+        <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" />
 
-      <!-- FORMULARI D'ACCÉS -->
-      <div class="card-panel" id="loginForm">
-        <h2>Accés</h2>
-        <div class="form-group">
-          <label for="loginEmail">Correu electrònic</label>
-          <input type="email" class="form-control" id="loginEmail" placeholder="usuari@exemple.com" />
-        </div>
-        <div class="form-group">
-          <label for="loginPassword">Contrasenya</label>
-          <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" />
-        </div>
+        <label for="loginPassword">Contrasena</label>
+        <input type="password" id="loginPassword" placeholder="Tu contrasena" />
 
-        <div class="btn-actions">
-          <button type="button" id="newUser" class="btn btn-outline-primary">Registrar nou usuari</button>
-          <button type="button" id="login" class="btn btn-default">Entrar</button>
+        <div class="actions">
+          <button type="button" id="login" class="btn-green">Entrar</button>
+          <button type="button" id="loginGoogle" class="btn-gray">Entrar con Google</button>
+          <button type="button" id="newUser" class="btn-gray">Crear cuenta</button>
         </div>
-      </div>
+      </section>
 
-      <!-- FORMULARI DE REGISTRE -->
-      <div class="card-panel" id="signupForm" style="display:none; max-width:560px;">
-        <h2>Registre</h2>
+      <section class="panel" id="signupForm" style="display: none;">
+        <h2>Crear cuenta</h2>
+        <label for="signupEmail">Correo</label>
+        <input type="email" id="signupEmail" />
 
-        <button type="button" id="loginGoogle">
-          <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-            <path fill="none" d="M0 0h48v48H0z"/>
-          </svg>
-          Continuar amb Google
-        </button>
-        <div class="or-divider">o</div>
+        <label for="signupUsername">Nombre de usuario</label>
+        <input type="text" id="signupUsername" />
 
-        <div class="form-group">
-          <label for="signupEmail">Correu electrònic</label>
-          <input type="email" class="form-control" id="signupEmail" placeholder="usuari@exemple.com" />
-        </div>
-        <div class="form-group">
-          <label for="signupUsername">Nom d'usuari</label>
-          <input type="text" class="form-control" id="signupUsername" placeholder="El teu nom d'usuari" />
-        </div>
-        <div class="form-group">
-          <label for="signupPassword">Contrasenya</label>
-          <input type="password" class="form-control" id="signupPassword" placeholder="••••••••" />
-        </div>
-        <div class="form-group">
-          <label for="signupPasswordConfirm">Confirmar contrasenya</label>
-          <input type="password" class="form-control" id="signupPasswordConfirm" placeholder="••••••••" />
-        </div>
-
-        <hr class="form-divider" />
-
-        <div class="form-group">
-          <label for="signupFotoPerfil">Foto de perfil <span class="label-opcional">(opcional)</span></label>
-          <div class="foto-upload-wrap">
-            <div class="foto-preview" id="fotoPreviewWrap">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-              </svg>
-              <img id="fotoPreviewImg" alt="Previsualització" />
-            </div>
-            <div>
-              <button type="button" class="btn-upload" onclick="document.getElementById('signupFotoPerfil').click()">Triar imatge</button>
-              <input type="file" id="signupFotoPerfil" accept="image/*" style="display:none" />
-              <p style="font-size:0.72rem;color:var(--grey-3);margin-top:6px;">JPG, PNG o WebP · màx. 2 MB</p>
-            </div>
+        <div class="row">
+          <div>
+            <label for="signupPassword">Contrasena</label>
+            <input type="password" id="signupPassword" />
+          </div>
+          <div>
+            <label for="signupPasswordConfirm">Repetir contrasena</label>
+            <input type="password" id="signupPasswordConfirm" />
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="signupAdreca">Adreça</label>
-          <input type="text" class="form-control" id="signupAdreca" placeholder="Carrer, número, pis..." />
-        </div>
-        <div class="form-group">
-          <label for="signupCiutat">Ciutat</label>
-          <input type="text" class="form-control" id="signupCiutat" placeholder="Barcelona, Vic, Girona..." />
-        </div>
-        <div class="form-group">
-          <label for="signupTelefon">Telèfon</label>
-          <input type="tel" class="form-control" id="signupTelefon" placeholder="+34 600 000 000" />
-        </div>
+        <label for="signupAdreca">Direccion</label>
+        <input type="text" id="signupAdreca" />
 
-        <hr class="form-divider" />
-
-        <div class="form-group" style="display:none;">
-          <label>Tipus de compte</label>
-          <div class="tipus-selector">
-            <button type="button" class="tipus-btn actiu" id="btnParticular" onclick="seleccionarTipus('particular')">Cliente</button>
-            <button type="button" class="tipus-btn" id="btnEmpresa" onclick="seleccionarTipus('empresa')">Empresa</button>
+        <div class="row">
+          <div>
+            <label for="signupCiutat">Ciudad</label>
+            <input type="text" id="signupCiutat" />
+          </div>
+          <div>
+            <label for="signupTelefon">Telefono</label>
+            <input type="tel" id="signupTelefon" />
           </div>
         </div>
 
-        <div class="form-group" id="grupCertificat" style="display:none;">
-          <div class="form-group" style="margin-bottom:16px;">
-            <label for="signupNomEmpresa">Nom de l'empresa</label>
-            <input type="text" class="form-control" id="signupNomEmpresa" placeholder="Raó social de l'empresa..." />
-          </div>
-          <label>Certificat d'empresa</label>
-          <div class="cert-upload-wrap" onclick="document.getElementById('signupCertificat').click()">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="1.4">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-              <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
-            </svg>
-            <div class="cert-upload-info">
-              <p>Fes clic per adjuntar el certificat</p>
-              <span>PDF · màx. 5 MB</span>
-            </div>
-          </div>
-          <input type="file" id="signupCertificat" accept=".pdf" style="display:none" />
-          <p class="cert-nom-fitxer" id="certNomFitxer"></p>
+        <div class="actions">
+          <button type="button" id="signup" class="btn-green">Crear cuenta</button>
+          <button type="button" id="tornarLogin" class="btn-gray">Volver</button>
         </div>
+      </section>
 
-        <div class="helper-note" style="margin-top:0;">
-          Tots els usuaris tindran la mateixa interfície: podran pujar productes, editar només els seus i comprar des del catàleg.
-        </div>
-
-        <div class="btn-actions">
-          <button type="button" id="tornarLogin" class="btn btn-outline-primary">← Tornar a l'accés</button>
-          <button type="button" id="signup" class="btn btn-default">Crear compte</button>
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════════ -->
-      <!-- VISTA EMPRESA                          -->
-      <!-- ══════════════════════════════════════ -->
-
-      <div class="card-panel" id="empresaForm" style="display:none; max-width:620px;">
-        <h2 id="empresaFormTitol">Nou producte</h2>
-        <div class="form-group">
-          <label for="prodTitol">Nom del producte</label>
-          <input type="text" class="form-control" id="prodTitol" placeholder="Nom del producte..." />
-        </div>
-        <div class="form-group">
-          <label for="prodDescripcio">Descripció</label>
-          <textarea class="form-control" id="prodDescripcio" rows="3" placeholder="Descriu el producte..."></textarea>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="form-grid-2">
-          <div class="form-group">
-            <label for="prodPreu">Preu (€)</label>
-            <input type="number" class="form-control" id="prodPreu" placeholder="0.00" min="0" step="0.01" />
-          </div>
-          <div class="form-group">
-            <label for="prodStock">Stock (unitats)</label>
-            <input type="number" class="form-control" id="prodStock" placeholder="0" min="0" step="1" />
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-grid-2">
-          <div class="form-group">
-            <label for="prodCategoria">Categoria</label>
-            <input type="text" class="form-control" id="prodCategoria" placeholder="Ex: Electrònica, Roba..." />
-          </div>
-          <div class="form-group" style="display:none;">
-            <label for="prodCompradors">Usuaris que han comprat</label>
-            <input type="number" class="form-control" id="prodCompradors" placeholder="0" min="0" step="1" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="prodImatge">URL de la imatge <span class="label-opcional">(opcional)</span></label>
-          <input type="url" class="form-control" id="prodImatge" placeholder="https://exemple.com/imatge.jpg" />
-        </div>
-        <p style="font-size:0.82rem;color:var(--grey-2);margin:-4px 0 18px;line-height:1.5;">
-          En aquesta vista nomÃ©s veus els teus productes i pots afegir-ne o editar-ne de manera simple.
-        </p>
-        <div class="btn-actions">
-          <button type="button" id="cancelarEdicio" class="btn btn-outline-primary" style="display:none;">Cancel·lar</button>
-          <button type="button" id="saveProd" class="btn btn-default">Guardar producte</button>
-        </div>
+      <section class="panel" id="empresaForm" style="display: none;">
+        <h2 id="empresaFormTitol">Nuevo producto</h2>
         <input type="hidden" id="prodId" />
-      </div>
+        <input type="hidden" id="prodCompradors" value="0" />
 
-      <div class="table-section" id="empresaTableSection" style="display:none;">
-        <h3>Els meus productes</h3>
-        <div class="table-responsive">
-          <table class="prod-table" id="listProdEmpresa"></table>
+        <label for="prodTitol">Nombre del producto</label>
+        <input type="text" id="prodTitol" />
+
+        <label for="prodDescripcio">Descripcion</label>
+        <textarea id="prodDescripcio"></textarea>
+
+        <div class="row">
+          <div>
+            <label for="prodPreu">Precio</label>
+            <input type="number" id="prodPreu" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="prodStock">Stock</label>
+            <input type="number" id="prodStock" min="0" step="1" />
+          </div>
         </div>
-      </div>
 
-      <!-- ══════════════════════════════════════ -->
-      <!-- VISTA PARTICULAR: catàleg             -->
-      <!-- ══════════════════════════════════════ -->
+        <div class="row">
+          <div>
+            <label for="prodCategoria">Categoria</label>
+            <input type="text" id="prodCategoria" />
+          </div>
+          <div>
+            <label for="prodImatge">URL de imagen</label>
+            <input type="url" id="prodImatge" placeholder="https://..." />
+          </div>
+        </div>
 
-      <div id="particularHeader" style="display:none; width:100%; max-width:1100px;">
-        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--grey-2);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:24px;padding-left:4px;">Catàleg de productes</h3>
-        <p style="color:var(--grey-2);font-size:0.9rem;line-height:1.6;max-width:720px;margin:-10px 0 24px 4px;">
-          Compra amb una quantitat simple i l'estoc baixarÃ  segons el que compris abans d'anar als punts de recollida.
-        </p>
-      </div>
-      <div class="productes-grid" id="productesCataleg" style="display:none;"></div>
-      <p id="catalogBuit" style="display:none;color:var(--grey-3);font-size:0.88rem;margin-top:40px;">No hi ha productes disponibles de moment.</p>
+        <div class="actions">
+          <button type="button" id="saveProd" class="btn-green">Guardar producto</button>
+          <button type="button" id="cancelarEdicio" class="btn-gray" style="display: none;">
+            Cancelar edicion
+          </button>
+        </div>
+      </section>
 
-    </div>
+      <section class="panel" id="empresaTableSection" style="display: none;">
+        <h3>Mis productos</h3>
+        <table id="listProdEmpresa"></table>
+      </section>
 
-    <div id="alert" role="alert"></div>
-    <footer>RePia &nbsp;·&nbsp; Gestió sostenible</footer>
+      <section class="panel" id="particularHeader" style="display: none;">
+        <h3>Catalogo</h3>
+        <p class="small">Aqui puedes ver todos los productos y comprar una cantidad sencilla.</p>
+      </section>
 
-    <script language="javascript" src="js/config.js"></script>
-    <script language="javascript" src="js/firestore.js"></script>
-    <script language="javascript">
+      <section class="catalogo" id="productesCataleg" style="display: none;"></section>
+      <p id="catalogBuit" class="small" style="display: none;">No hay productos disponibles.</p>
+    </main>
 
-      const usuaris  = db.collection("usuaris");
+    <div id="alert"></div>
+
+    <footer>RePia - Gestion sostenible</footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/firestore.js"></script>
+    <script>
+      const usuaris = db.collection("usuaris");
       const productes = db.collection("items");
 
-      let tipusCompte = 'usuari';
-      let rolActual   = null;
-      let uidActual   = null;
-      let creantUsuari = false;
+      let uidActual = null;
+      let creandoUsuario = false;
 
-      /* ── REGISTRE: selector particular / empresa ── */
-      function seleccionarTipus(tipus) {
-        tipusCompte = tipus;
-        document.getElementById('btnParticular').classList.toggle('actiu', tipus === 'particular');
-        document.getElementById('btnEmpresa').classList.toggle('actiu',    tipus === 'empresa');
-        document.getElementById('grupCertificat').style.display = tipus === 'empresa' ? 'block' : 'none';
+      function el(id) {
+        return document.getElementById(id);
       }
 
-      document.getElementById('signupFotoPerfil').addEventListener('change', function () {
-        const fitxer = this.files[0];
-        if (!fitxer) return;
-        const lector = new FileReader();
-        lector.onload = e => {
-          const img = document.getElementById('fotoPreviewImg');
-          img.src = e.target.result;
-          img.style.display = 'block';
-          document.querySelector('.foto-preview svg').style.display = 'none';
-        };
-        lector.readAsDataURL(fitxer);
-      });
+      function mostrarAlerta(texto, tipo) {
+        const aviso = el("alert");
+        aviso.textContent = texto;
+        aviso.className = tipo;
+        aviso.style.display = "block";
 
-      document.getElementById('signupCertificat').addEventListener('change', function () {
-        const fitxer = this.files[0];
-        const nomEl  = document.getElementById('certNomFitxer');
-        nomEl.textContent = fitxer ? fitxer.name : '';
-        nomEl.style.display = fitxer ? 'block' : 'none';
-      });
-
-      /* ── ALERTES ── */
-      function showAlert(text, type) {
-        const el = document.getElementById("alert");
-        el.innerText   = text;
-        el.className   = `alert ${type}`;
-        el.style.display = "block";
-        setTimeout(() => { el.style.display = "none"; }, 2500);
+        setTimeout(function () {
+          aviso.style.display = "none";
+        }, 2500);
       }
 
-      function authDisponibleEnEntornActual() {
-        return ['http:', 'https:', 'chrome-extension:'].includes(window.location.protocol);
+      function authDisponible() {
+        const protocolo = window.location.protocol;
+        return protocolo === "http:" || protocolo === "https:" || protocolo === "chrome-extension:";
       }
 
-      function missatgeErrorAuth(error) {
-        if (!error || !error.code) return "Error d'autenticació";
+      function textoErrorAuth(error) {
+        if (!error || !error.code) {
+          return "Error de autenticacion";
+        }
 
-        const missatges = {
-          'auth/invalid-email': "El correu no tÃ© un format vÃ lid",
-          'auth/email-already-in-use': "Aquest correu ja estÃ  registrat",
-          'auth/weak-password': "La contrasenya Ã©s massa feble",
-          'auth/wrong-password': "Contrasenya incorrecta",
-          'auth/user-not-found': "No existeix cap usuari amb aquest correu",
-          'auth/popup-closed-by-user': "Has tancat la finestra de Google abans d'acabar",
-          'auth/operation-not-supported-in-this-environment': "Obre l'app amb http://localhost o https, no amb file://",
-          'auth/web-storage-unsupported': "El navegador no permet l'emmagatzematge web necessari per iniciar sessiÃ³"
+        const errores = {
+          "auth/invalid-email": "El correo no es valido",
+          "auth/email-already-in-use": "Ese correo ya existe",
+          "auth/weak-password": "La contrasena es demasiado corta",
+          "auth/wrong-password": "Contrasena incorrecta",
+          "auth/user-not-found": "Usuario no encontrado",
+          "auth/popup-closed-by-user": "Has cerrado la ventana de Google",
+          "auth/operation-not-supported-in-this-environment": "Abre la web con http://localhost o https",
+          "auth/web-storage-unsupported": "El navegador no permite guardar la sesion"
         };
 
-        return missatges[error.code] || error.message || "Error d'autenticació";
+        return errores[error.code] || error.message || "Error de autenticacion";
       }
 
-      /* ── AMAGAR TOT ── */
-      function amagarTot() {
-        ['loginForm','signupForm','empresaForm','empresaTableSection',
-         'particularHeader','productesCataleg','catalogBuit'].forEach(id => {
-          document.getElementById(id).style.display = 'none';
-        });
+      function ocultarTodo() {
+        el("loginForm").style.display = "none";
+        el("signupForm").style.display = "none";
+        el("empresaForm").style.display = "none";
+        el("empresaTableSection").style.display = "none";
+        el("particularHeader").style.display = "none";
+        el("productesCataleg").style.display = "none";
+        el("catalogBuit").style.display = "none";
       }
 
-      async function comprarProducte(id) {
-        const inputQuantitat = document.getElementById(`qty-${id}`);
-        if (!inputQuantitat) return;
-
-        const quantitat = parseInt(inputQuantitat.value, 10);
-        if (isNaN(quantitat) || quantitat < 1) {
-          showAlert("Introdueix una quantitat vàlida", "alert-danger");
-          return;
-        }
-
-        try {
-          const snap = await selectById(productes, id);
-          if (!snap.exists) {
-            showAlert("Aquest producte ja no està disponible", "alert-danger");
-            await carregarCataleg();
-            return;
-          }
-
-          const data = snap.data();
-          const stockActual = data.stock != null ? Number(data.stock) : 0;
-          if (quantitat > stockActual) {
-            showAlert("No hi ha prou stock per aquesta compra", "alert-danger");
-            inputQuantitat.value = stockActual > 0 ? stockActual : 1;
-            await carregarCataleg();
-            return;
-          }
-
-          const stockNou = stockActual - quantitat;
-          const compradorsNous = (Number(data.compradors) || 0) + 1;
-
-          await updateById(productes, id, {
-            stock: stockNou,
-            compradors: compradorsNous
-          });
-
-          sessionStorage.setItem('repiaCompra', JSON.stringify({
-            producto: data.title || 'Producto',
-            cantidad: quantitat,
-            stockRestante: stockNou
-          }));
-
-          await carregarProductesEmpresa();
-          await carregarCataleg();
-          showAlert("Felicitats per la compra. Ara et portarem als punts de recollida", "alert-success");
-          setTimeout(() => {
-            window.location.href = 'puntos-recogida.html';
-          }, 1700);
-        } catch (e) {
-          showAlert("Error al completar la compra", "alert-danger");
-        }
+      function mostrarLogin() {
+        ocultarTodo();
+        el("loginForm").style.display = "block";
+        el("userInfo").style.display = "none";
+        el("headerTagline").style.display = "block";
       }
 
-      /* ── CAPÇALERA AUTENTICADA ── */
-      function mostrarCapcaleraUsuari(nom) {
-        document.getElementById('headerTagline').style.display = 'none';
-        const ui = document.getElementById('userInfo');
-        ui.style.display = 'flex';
-        document.getElementById('userRoleBadge').textContent = 'Usuari';
-        document.getElementById('userName').textContent = nom || '';
+      function mostrarRegistro() {
+        ocultarTodo();
+        el("signupForm").style.display = "block";
+        el("userInfo").style.display = "none";
+        el("headerTagline").style.display = "block";
       }
 
-      /* ── VISTA ÚNICA ── */
-      async function mostrarVistaUsuari() {
-        amagarTot();
-        document.getElementById('empresaForm').style.display = 'block';
-        document.getElementById('empresaTableSection').style.display = 'block';
-        document.getElementById('particularHeader').style.display = 'block';
-        document.getElementById('productesCataleg').style.display = 'grid';
-        await carregarProductesEmpresa();
-        await carregarCataleg();
+      function mostrarUsuario(nombre) {
+        el("headerTagline").style.display = "none";
+        el("userInfo").style.display = "flex";
+        el("userName").textContent = nombre || "";
       }
 
-      /* ── LOGIN SUCCESS ── */
-      async function onLoginSuccess(uid) {
-        uidActual = uid;
-        try {
-          const docSnap = await usuaris.doc(uid).get();
-          if (docSnap.exists) {
-            const data = docSnap.data();
-            rolActual = 'usuari';
-            mostrarCapcaleraUsuari(data.username || data.email || '');
-          } else {
-            rolActual = 'usuari';
-            mostrarCapcaleraUsuari(auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
-          }
-        } catch (e) {
-          rolActual = 'usuari';
-          mostrarCapcaleraUsuari(auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email || '') : '');
-        }
-        await mostrarVistaUsuari();
+      function limpiarFormularioProducto() {
+        el("prodId").value = "";
+        el("prodTitol").value = "";
+        el("prodDescripcio").value = "";
+        el("prodPreu").value = "";
+        el("prodStock").value = "";
+        el("prodCategoria").value = "";
+        el("prodImatge").value = "";
+        el("prodCompradors").value = 0;
+        el("empresaFormTitol").textContent = "Nuevo producto";
+        el("cancelarEdicio").style.display = "none";
       }
 
-      /* ═══════════════════════════════════════════ */
-      /* EMPRESA: CRUD PRODUCTES                     */
-      /* ═══════════════════════════════════════════ */
+      async function mostrarAplicacion() {
+        ocultarTodo();
+        el("empresaForm").style.display = "block";
+        el("empresaTableSection").style.display = "block";
+        el("particularHeader").style.display = "block";
+        el("productesCataleg").style.display = "grid";
+        await cargarMisProductos();
+        await cargarCatalogo();
+      }
 
-      async function carregarProductesEmpresa() {
-        const docs  = await selectWhere(productes, 'empresaUid', '==', uidActual);
-        const taula = document.getElementById('listProdEmpresa');
-        taula.innerHTML = `
-          <thead><tr>
-            <th>Producte</th>
-            <th>Categoria</th>
-            <th>Preu</th>
-            <th>Stock</th>
-            <th>Compradors</th>
-            <th></th>
-          </tr></thead><tbody id="prodTbody"></tbody>`;
+      async function cargarMisProductos() {
+        const tabla = el("listProdEmpresa");
+        tabla.innerHTML =
+          "<thead><tr><th>Producto</th><th>Categoria</th><th>Precio</th><th>Stock</th><th>Compradores</th><th>Acciones</th></tr></thead><tbody></tbody>";
 
-        const tbody = document.getElementById('prodTbody');
+        const tbody = tabla.querySelector("tbody");
+        const docs = await selectWhere(productes, "empresaUid", "==", uidActual);
+
         if (docs.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" style="padding:24px 20px;color:var(--grey-3);font-size:0.85rem;text-align:center;">Encara no tens productes. Afegeix-ne un dalt!</td></tr>`;
+          tbody.innerHTML = "<tr><td colspan='6'>Todavia no has creado productos.</td></tr>";
           return;
         }
-        docs.forEach(doc => {
-          const d  = doc.data();
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>
-              <strong style="color:var(--white);display:block;">${d.title || ''}</strong>
-              <span style="font-size:0.78rem;color:var(--grey-3);">${(d.content||'').substring(0,55)}${d.content&&d.content.length>55?'…':''}</span>
-            </td>
-            <td><span class="badge-cat">${d.categoria || '—'}</span></td>
-            <td><span class="preu-tag">${d.preu != null ? Number(d.preu).toFixed(2)+' €' : '—'}</span></td>
-            <td>${d.stock != null ? d.stock : '—'}</td>
-            <td><span class="badge-compradors">👥 ${d.compradors || 0}</span></td>
-            <td style="white-space:nowrap;">
-              <button class="btn-taula btn-taula-edit" onclick="editarProducte('${doc.id}')">Editar</button>
-              <button class="btn-taula btn-taula-del"  onclick="eliminarProducte('${doc.id}')">Eliminar</button>
-            </td>`;
-          tbody.appendChild(tr);
+
+        docs.forEach(function (doc) {
+          const data = doc.data();
+          const fila = document.createElement("tr");
+
+          fila.innerHTML =
+            "<td>" + (data.title || "") + "</td>" +
+            "<td>" + (data.categoria || "-") + "</td>" +
+            "<td>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</td>" +
+            "<td>" + (data.stock != null ? data.stock : "-") + "</td>" +
+            "<td>" + (data.compradors || 0) + "</td>" +
+            "<td>" +
+            "<button type='button' class='btn-gray' onclick=\"editarProducte('" + doc.id + "')\">Editar</button> " +
+            "<button type='button' class='btn-red' onclick=\"eliminarProducte('" + doc.id + "')\">Eliminar</button>" +
+            "</td>";
+
+          tbody.appendChild(fila);
         });
       }
 
-      document.getElementById('saveProd').addEventListener('click', async () => {
-        const id          = document.getElementById('prodId').value;
-        const titol       = document.getElementById('prodTitol').value.trim();
-        const desc        = document.getElementById('prodDescripcio').value.trim();
-        const preu        = parseFloat(document.getElementById('prodPreu').value);
-        const stock       = parseInt(document.getElementById('prodStock').value);
-        const categoria   = document.getElementById('prodCategoria').value.trim();
-        const compradors  = parseInt(document.getElementById('prodCompradors').value) || 0;
-        const imatge      = document.getElementById('prodImatge').value.trim();
+      async function cargarCatalogo() {
+        const contenedor = el("productesCataleg");
+        const docs = await selectAll(productes);
 
-        if (!titol)               { showAlert("El nom del producte és obligatori", "alert-danger"); return; }
-        if (isNaN(preu) || preu < 0)  { showAlert("Introdueix un preu vàlid", "alert-danger"); return; }
-        if (isNaN(stock) || stock < 0){ showAlert("Introdueix un stock vàlid", "alert-danger"); return; }
+        contenedor.innerHTML = "";
 
-        const docData = {
-          title: titol,
-          content: desc,
-          preu,
-          stock,
-          categoria,
-          compradors,
-          imatge,
+        if (docs.length === 0) {
+          contenedor.style.display = "none";
+          el("catalogBuit").style.display = "block";
+          return;
+        }
+
+        contenedor.style.display = "grid";
+        el("catalogBuit").style.display = "none";
+
+        docs.forEach(function (doc) {
+          const data = doc.data();
+          const stock = data.stock != null ? Number(data.stock) : 0;
+          const imagen = data.imatge ? data.imatge : "";
+          const tarjeta = document.createElement("div");
+          tarjeta.className = "card";
+
+          tarjeta.innerHTML =
+            (imagen
+              ? "<img src='" + imagen + "' alt='Imagen del producto' onerror=\"this.style.display='none'\" />"
+              : "<div style='height:180px;background:#eee;display:flex;align-items:center;justify-content:center;'>Sin imagen</div>") +
+            "<div class='card-body'>" +
+            "<h4>" + (data.title || "Sin nombre") + "</h4>" +
+            "<p class='small'>" + (data.content || "") + "</p>" +
+            "<p class='small'>Categoria: " + (data.categoria || "-") + "</p>" +
+            "<p class='small'>Stock: " + stock + "</p>" +
+            "<p class='small'>Compradores: " + (data.compradors || 0) + "</p>" +
+            "<p class='price'>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</p>" +
+            "<div class='actions'>" +
+            "<input type='number' id='qty-" + doc.id + "' min='1' max='" + (stock > 0 ? stock : 1) + "' value='1' " + (stock <= 0 ? "disabled" : "") + " />" +
+            "<button type='button' class='btn-green' onclick=\"comprarProducte('" + doc.id + "')\" " + (stock <= 0 ? "disabled" : "") + ">" +
+            (stock > 0 ? "Comprar" : "Sin stock") +
+            "</button>" +
+            "</div>" +
+            "</div>";
+
+          contenedor.appendChild(tarjeta);
+        });
+      }
+
+      async function guardarProducto() {
+        const id = el("prodId").value;
+        const titulo = el("prodTitol").value.trim();
+        const descripcion = el("prodDescripcio").value.trim();
+        const precio = parseFloat(el("prodPreu").value);
+        const stock = parseInt(el("prodStock").value, 10);
+        const categoria = el("prodCategoria").value.trim();
+        const compradores = parseInt(el("prodCompradors").value, 10) || 0;
+        const imagen = el("prodImatge").value.trim();
+
+        if (!titulo) {
+          mostrarAlerta("El nombre del producto es obligatorio", "error");
+          return;
+        }
+
+        if (isNaN(precio) || precio < 0) {
+          mostrarAlerta("Introduce un precio valido", "error");
+          return;
+        }
+
+        if (isNaN(stock) || stock < 0) {
+          mostrarAlerta("Introduce un stock valido", "error");
+          return;
+        }
+
+        const producto = {
+          title: titulo,
+          content: descripcion,
+          preu: precio,
+          stock: stock,
+          categoria: categoria,
+          compradors: compradores,
+          imatge: imagen,
           empresaUid: uidActual,
           ownerUid: uidActual
         };
 
         try {
-          if (!id) {
-            await add(productes, docData);
-            showAlert("Producte afegit correctament", "alert-success");
+          if (id) {
+            await updateById(productes, id, producto);
+            mostrarAlerta("Producto actualizado", "ok");
           } else {
-            await updateById(productes, id, docData);
-            showAlert("Producte actualitzat correctament", "alert-success");
+            await add(productes, producto);
+            mostrarAlerta("Producto guardado", "ok");
           }
-          netejarFormulariProducte();
-          await carregarProductesEmpresa();
-          await carregarCataleg();
-        } catch (e) {
-          showAlert("Error al guardar el producte", "alert-danger");
+
+          limpiarFormularioProducto();
+          await cargarMisProductos();
+          await cargarCatalogo();
+        } catch (error) {
+          mostrarAlerta("No se pudo guardar el producto", "error");
         }
-      });
+      }
 
       async function editarProducte(id) {
         const snap = await selectById(productes, id);
-        if (!snap.exists) return;
-        const d = snap.data();
-        if (d.empresaUid !== uidActual && d.ownerUid !== uidActual) {
-          showAlert("Només pots editar els teus productes", "alert-danger");
+        if (!snap.exists) {
           return;
         }
-        document.getElementById('prodId').value           = id;
-        document.getElementById('prodTitol').value        = d.title || '';
-        document.getElementById('prodDescripcio').value   = d.content || '';
-        document.getElementById('prodPreu').value         = d.preu != null ? d.preu : '';
-        document.getElementById('prodStock').value        = d.stock != null ? d.stock : '';
-        document.getElementById('prodCategoria').value    = d.categoria || '';
-        document.getElementById('prodCompradors').value   = d.compradors || 0;
-        document.getElementById('prodImatge').value       = d.imatge || '';
-        document.getElementById('empresaFormTitol').textContent = 'Editar producte';
-        document.getElementById('cancelarEdicio').style.display = 'inline-flex';
-        document.getElementById('empresaForm').scrollIntoView({ behavior: 'smooth' });
+
+        const data = snap.data();
+
+        if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
+          mostrarAlerta("Solo puedes editar tus productos", "error");
+          return;
+        }
+
+        el("prodId").value = id;
+        el("prodTitol").value = data.title || "";
+        el("prodDescripcio").value = data.content || "";
+        el("prodPreu").value = data.preu != null ? data.preu : "";
+        el("prodStock").value = data.stock != null ? data.stock : "";
+        el("prodCategoria").value = data.categoria || "";
+        el("prodCompradors").value = data.compradors || 0;
+        el("prodImatge").value = data.imatge || "";
+        el("empresaFormTitol").textContent = "Editar producto";
+        el("cancelarEdicio").style.display = "inline-block";
+        el("empresaForm").scrollIntoView();
       }
 
       async function eliminarProducte(id) {
         const snap = await selectById(productes, id);
-        if (!snap.exists) return;
-        const d = snap.data();
-        if (d.empresaUid !== uidActual && d.ownerUid !== uidActual) {
-          showAlert("Només pots eliminar els teus productes", "alert-danger");
+        if (!snap.exists) {
           return;
         }
-        if (!confirm('Segur que vols eliminar aquest producte?')) return;
+
+        const data = snap.data();
+
+        if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
+          mostrarAlerta("Solo puedes eliminar tus productos", "error");
+          return;
+        }
+
+        if (!window.confirm("Seguro que quieres eliminar este producto?")) {
+          return;
+        }
+
         try {
           await deleteById(productes, id);
-          showAlert("Producte eliminat", "alert-success");
-          await carregarProductesEmpresa();
-          await carregarCataleg();
-        } catch (e) {
-          showAlert("Error al eliminar el producte", "alert-danger");
+          mostrarAlerta("Producto eliminado", "ok");
+          await cargarMisProductos();
+          await cargarCatalogo();
+        } catch (error) {
+          mostrarAlerta("No se pudo eliminar el producto", "error");
         }
       }
 
-      document.getElementById('cancelarEdicio').addEventListener('click', netejarFormulariProducte);
-
-      function netejarFormulariProducte() {
-        ['prodId','prodTitol','prodDescripcio','prodPreu','prodStock','prodCategoria','prodImatge'].forEach(id => {
-          document.getElementById(id).value = '';
-        });
-        document.getElementById('prodCompradors').value = 0;
-        document.getElementById('empresaFormTitol').textContent = 'Nou producte';
-        document.getElementById('cancelarEdicio').style.display = 'none';
-      }
-
-      /* ═══════════════════════════════════════════ */
-      /* PARTICULAR: CATÀLEG                         */
-      /* ═══════════════════════════════════════════ */
-
-      async function carregarCataleg() {
-        const docs = await selectAll(productes);
-        const grid = document.getElementById('productesCataleg');
-        grid.innerHTML = '';
-        if (docs.length === 0) {
-          grid.style.display = 'none';
-          document.getElementById('catalogBuit').style.display = 'block';
+      async function comprarProducte(id) {
+        const inputCantidad = el("qty-" + id);
+        if (!inputCantidad) {
           return;
         }
-        grid.style.display = 'grid';
-        document.getElementById('catalogBuit').style.display = 'none';
-        docs.forEach(doc => {
-          const d    = doc.data();
-          const stock = d.stock != null ? Number(d.stock) : 0;
-          const card = document.createElement('div');
-          card.className = 'producte-card';
-          card.innerHTML = `
-            <div class="producte-card-img">
-              ${d.imatge ? `<img src="${d.imatge}" alt="${d.title}" onerror="this.parentElement.innerHTML='Sense imatge'" />` : 'Sense imatge'}
-            </div>
-            <div class="producte-card-body">
-              <h4>${d.title || 'Sense nom'}</h4>
-              ${d.categoria ? `<span class="badge-cat" style="margin-bottom:8px;display:inline-block;">${d.categoria}</span>` : ''}
-              <p>${d.content || ''}</p>
-            </div>
-            <div class="producte-card-footer" style="flex-direction:column;align-items:stretch;gap:12px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-                <span class="preu-tag">${d.preu != null ? Number(d.preu).toFixed(2)+' €' : '—'}</span>
-                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
-                  <span style="font-size:0.75rem;color:var(--grey-3);">Stock: ${stock}</span>
-                  <span class="badge-compradors">👥 ${d.compradors || 0}</span>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:80px 1fr;gap:10px;">
-                <input type="number" class="form-control" id="qty-${doc.id}" min="1" max="${stock > 0 ? stock : 1}" value="1" ${stock <= 0 ? 'disabled' : ''} />
-                <button type="button" class="btn btn-default" onclick="comprarProducte('${doc.id}')" ${stock <= 0 ? 'disabled style="opacity:0.55;cursor:not-allowed;"' : ''}>
-                  ${stock > 0 ? 'Comprar' : 'Sense stock'}
-                </button>
-              </div>
-            </div>`;
-          grid.appendChild(card);
-        });
-      }
 
-      /* ═══════════════════════════════════════════ */
-      /* AUTH                                        */
-      /* ═══════════════════════════════════════════ */
+        const cantidad = parseInt(inputCantidad.value, 10);
 
-      if (!authDisponibleEnEntornActual()) {
-        setTimeout(() => {
-          showAlert("Firebase Auth necessita obrir la web amb http://localhost o https", "alert-danger");
-        }, 250);
-      }
+        if (isNaN(cantidad) || cantidad < 1) {
+          mostrarAlerta("Introduce una cantidad valida", "error");
+          return;
+        }
 
-      if (authDisponibleEnEntornActual()) {
-        auth.onAuthStateChanged(async (user) => {
-          if (user) {
-            if (creantUsuari) return;
-            if (uidActual !== user.uid) {
-              await onLoginSuccess(user.uid);
-            }
+        try {
+          const snap = await selectById(productes, id);
+
+          if (!snap.exists) {
+            mostrarAlerta("Ese producto ya no existe", "error");
+            await cargarCatalogo();
             return;
           }
 
-          rolActual = null;
-          uidActual = null;
-          amagarTot();
-          document.getElementById('loginForm').style.display = 'block';
-          document.getElementById('userInfo').style.display  = 'none';
-          document.getElementById('headerTagline').style.display = '';
-        });
+          const data = snap.data();
+          const stockActual = data.stock != null ? Number(data.stock) : 0;
+
+          if (cantidad > stockActual) {
+            mostrarAlerta("No hay suficiente stock", "error");
+            inputCantidad.value = stockActual > 0 ? stockActual : 1;
+            await cargarCatalogo();
+            return;
+          }
+
+          const stockNuevo = stockActual - cantidad;
+          const compradoresNuevos = (Number(data.compradors) || 0) + 1;
+
+          await updateById(productes, id, {
+            stock: stockNuevo,
+            compradors: compradoresNuevos
+          });
+
+          sessionStorage.setItem("repiaCompra", JSON.stringify({
+            producto: data.title || "Producto",
+            cantidad: cantidad,
+            stockRestante: stockNuevo
+          }));
+
+          await cargarMisProductos();
+          await cargarCatalogo();
+          mostrarAlerta("Compra hecha. Te llevamos a los puntos de recogida", "ok");
+
+          setTimeout(function () {
+            window.location.href = "puntos-recogida.html";
+          }, 1700);
+        } catch (error) {
+          mostrarAlerta("No se pudo completar la compra", "error");
+        }
       }
 
-      document.getElementById("loginGoogle").addEventListener("click", async () => {
-        if (!authDisponibleEnEntornActual()) {
-          showAlert("Obre l'app amb http://localhost o https per usar Firebase Auth", "alert-danger");
+      async function cargarUsuario(uid) {
+        let nombre = "";
+
+        try {
+          const snap = await usuaris.doc(uid).get();
+          if (snap.exists) {
+            const data = snap.data();
+            nombre = data.username || data.email || "";
+          }
+        } catch (error) {
+          nombre = "";
+        }
+
+        if (!nombre && auth.currentUser) {
+          nombre = auth.currentUser.displayName || auth.currentUser.email || "";
+        }
+
+        return nombre;
+      }
+
+      async function entrarConGoogle() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
           return;
         }
+
         try {
           await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        } catch (e) {
-          showAlert(missatgeErrorAuth(e), "alert-danger");
+        } catch (error) {
+          mostrarAlerta(textoErrorAuth(error), "error");
         }
-      });
+      }
 
-      document.getElementById("login").addEventListener("click", async () => {
-        const email    = document.getElementById("loginEmail").value.trim();
-        const password = document.getElementById("loginPassword").value;
-        if (!authDisponibleEnEntornActual()) {
-          showAlert("Obre l'app amb http://localhost o https per usar Firebase Auth", "alert-danger");
+      async function entrar() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
           return;
         }
+
+        const email = el("loginEmail").value.trim();
+        const password = el("loginPassword").value;
+
         try {
           await auth.signInWithEmailAndPassword(email, password);
-        } catch (e) {
-          showAlert(missatgeErrorAuth(e), "alert-danger");
+        } catch (error) {
+          mostrarAlerta(textoErrorAuth(error), "error");
         }
-      });
+      }
 
-      document.getElementById("btnLogout").addEventListener("click", async () => {
-        sessionStorage.removeItem('repiaCompra');
-        await auth.signOut();
-        rolActual = null;
-        uidActual = null;
-        amagarTot();
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('userInfo').style.display  = 'none';
-        document.getElementById('headerTagline').style.display = '';
-      });
-
-      document.getElementById("tornarLogin").addEventListener("click", () => {
-        document.getElementById("signupForm").style.display = "none";
-        document.getElementById("loginForm").style.display  = "block";
-      });
-
-      document.getElementById("newUser").addEventListener("click", () => {
-        document.getElementById("loginForm").style.display  = "none";
-        document.getElementById("signupForm").style.display = "block";
-      });
-
-      document.getElementById("signup").addEventListener("click", async () => {
-        const email           = document.getElementById("signupEmail").value.trim();
-        const username        = document.getElementById("signupUsername").value.trim();
-        const password        = document.getElementById("signupPassword").value;
-        const passwordConfirm = document.getElementById("signupPasswordConfirm").value;
-        const adreca          = document.getElementById("signupAdreca").value.trim();
-        const ciutat          = document.getElementById("signupCiutat").value.trim();
-        const telefon         = document.getElementById("signupTelefon").value.trim();
-
-        if (!authDisponibleEnEntornActual()) {
-          showAlert("Obre l'app amb http://localhost o https per crear comptes", "alert-danger");
+      async function registrar() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
           return;
         }
 
-        if (!email || email.indexOf("@") < 1)                          { showAlert("Correu electrònic incorrecte", "alert-danger"); return; }
-        if (!username || username.length < 3)                          { showAlert("El nom d'usuari ha de tenir almenys 3 caràcters", "alert-danger"); return; }
-        if (!password)                                                  { showAlert("La contrasenya és obligatòria", "alert-danger"); return; }
-        if (password.length < 8)                                       { showAlert("La contrasenya ha de tenir una longitud mínima de 8 caràcters", "alert-danger"); return; }
-        if (password !== passwordConfirm)                              { showAlert("Les contrasenyes no coincideixen", "alert-danger"); return; }
-        if (!adreca)                                                    { showAlert("L'adreça és obligatòria", "alert-danger"); return; }
-        if (!ciutat)                                                    { showAlert("La ciutat és obligatòria", "alert-danger"); return; }
-        if (!telefon)                                                   { showAlert("El telèfon és obligatori", "alert-danger"); return; }
+        const email = el("signupEmail").value.trim();
+        const username = el("signupUsername").value.trim();
+        const password = el("signupPassword").value;
+        const passwordConfirm = el("signupPasswordConfirm").value;
+        const adreca = el("signupAdreca").value.trim();
+        const ciutat = el("signupCiutat").value.trim();
+        const telefon = el("signupTelefon").value.trim();
 
-        creantUsuari = true;
+        if (!email || email.indexOf("@") < 1) {
+          mostrarAlerta("Correo incorrecto", "error");
+          return;
+        }
+
+        if (!username || username.length < 3) {
+          mostrarAlerta("El nombre debe tener al menos 3 caracteres", "error");
+          return;
+        }
+
+        if (!password || password.length < 8) {
+          mostrarAlerta("La contrasena debe tener al menos 8 caracteres", "error");
+          return;
+        }
+
+        if (password !== passwordConfirm) {
+          mostrarAlerta("Las contrasenas no coinciden", "error");
+          return;
+        }
+
+        if (!adreca || !ciutat || !telefon) {
+          mostrarAlerta("Completa direccion, ciudad y telefono", "error");
+          return;
+        }
+
+        creandoUsuario = true;
 
         try {
           const cred = await auth.createUserWithEmailAndPassword(email, password);
+
           await usuaris.doc(cred.user.uid).set({
-            username:   username.trim(),
-            email,
-            adreca,
-            ciutat,
-            telefon,
-            rol:        'usuari'
+            username: username,
+            email: email,
+            adreca: adreca,
+            ciutat: ciutat,
+            telefon: telefon,
+            rol: "usuari"
           });
-          creantUsuari = false;
-          showAlert("Usuari creat correctament", "alert-success");
-          await onLoginSuccess(cred.user.uid);
-        } catch (e) {
-          creantUsuari = false;
-          showAlert(missatgeErrorAuth(e), "alert-danger");
+
+          creandoUsuario = false;
+          uidActual = cred.user.uid;
+          mostrarUsuario(username);
+          limpiarFormularioProducto();
+          await mostrarAplicacion();
+          mostrarAlerta("Cuenta creada correctamente", "ok");
+        } catch (error) {
+          creandoUsuario = false;
+          mostrarAlerta(textoErrorAuth(error), "error");
         }
+      }
+
+      el("login").addEventListener("click", entrar);
+      el("loginGoogle").addEventListener("click", entrarConGoogle);
+      el("newUser").addEventListener("click", mostrarRegistro);
+      el("tornarLogin").addEventListener("click", mostrarLogin);
+      el("signup").addEventListener("click", registrar);
+      el("saveProd").addEventListener("click", guardarProducto);
+      el("cancelarEdicio").addEventListener("click", limpiarFormularioProducto);
+
+      el("btnLogout").addEventListener("click", async function () {
+        sessionStorage.removeItem("repiaCompra");
+
+        try {
+          await auth.signOut();
+        } catch (error) {
+        }
+
+        uidActual = null;
+        limpiarFormularioProducto();
+        mostrarLogin();
       });
 
+      window.editarProducte = editarProducte;
+      window.eliminarProducte = eliminarProducte;
+      window.comprarProducte = comprarProducte;
+
+      if (!authDisponible()) {
+        setTimeout(function () {
+          mostrarAlerta("Firebase Auth necesita abrirse con http://localhost o https", "error");
+        }, 300);
+      }
+
+      if (authDisponible()) {
+        auth.onAuthStateChanged(async function (user) {
+          if (!user) {
+            uidActual = null;
+            limpiarFormularioProducto();
+            mostrarLogin();
+            return;
+          }
+
+          if (creandoUsuario) {
+            return;
+          }
+
+          if (uidActual === user.uid) {
+            return;
+          }
+
+          uidActual = user.uid;
+          limpiarFormularioProducto();
+          mostrarUsuario(await cargarUsuario(user.uid));
+          await mostrarAplicacion();
+        });
+      } else {
+        mostrarLogin();
+      }
     </script>
   </body>
 </html>
