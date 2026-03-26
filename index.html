@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RePia</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.png" />
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+      }
+
+      header {
+        background: #2f7d32;
+        color: white;
+        padding: 20px;
+      }
+
+      header h1 {
+        margin: 0 0 6px;
+        font-size: 28px;
+      }
+
+      header p {
+        margin: 0;
+      }
+
+      .header-top {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      #userInfo {
+        display: none;
+        align-items: center;
+        gap: 12px;
+      }
+
+      #userInfo button {
+        width: auto;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 16px 40px;
+      }
+
+      .panel {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .panel h2,
+      .panel h3 {
+        margin-top: 0;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        font: inherit;
+        padding: 10px;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        margin-bottom: 14px;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      button {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .btn-green {
+        background: #2f7d32;
+        color: white;
+      }
+
+      .btn-gray {
+        background: #e5e5e5;
+        color: #222;
+      }
+
+      .btn-red {
+        background: #c62828;
+        color: white;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .actions button {
+        width: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background: #f0f0f0;
+      }
+
+      .catalogo {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background: #eee;
+      }
+
+      .card-body {
+        padding: 14px;
+      }
+
+      .card-body h4 {
+        margin: 0 0 8px;
+      }
+
+      .price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2f7d32;
+      }
+
+      .small {
+        color: #666;
+        font-size: 14px;
+      }
+
+      #alert {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        max-width: 320px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        color: white;
+      }
+
+      .ok {
+        background: #2f7d32;
+      }
+
+      .error {
+        background: #c62828;
+      }
+
+      footer {
+        text-align: center;
+        color: #666;
+        padding: 24px 16px 40px;
+      }
+
+      @media (max-width: 700px) {
+        .row,
+        .header-top {
+          grid-template-columns: 1fr;
+          display: block;
+        }
+
+        #userInfo {
+          margin-top: 12px;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .actions button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-top">
+        <div>
+          <h1>RePia</h1>
+          <p id="headerTagline">Gestion simple de productos</p>
+        </div>
+        <div id="userInfo">
+          <span id="userName"></span>
+          <button id="btnLogout" class="btn-gray">Cerrar sesion</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel" id="loginForm">
+        <h2>Iniciar sesion</h2>
+        <label for="loginEmail">Correo</label>
+        <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" />
+
+        <label for="loginPassword">Contrasena</label>
+        <input type="password" id="loginPassword" placeholder="Tu contrasena" />
+
+        <div class="actions">
+          <button type="button" id="login" class="btn-green">Entrar</button>
+          <button type="button" id="loginGoogle" class="btn-gray">Entrar con Google</button>
+          <button type="button" id="newUser" class="btn-gray">Crear cuenta</button>
+        </div>
+      </section>
+
+      <section class="panel" id="signupForm" style="display: none;">
+        <h2>Crear cuenta</h2>
+        <label for="signupEmail">Correo</label>
+        <input type="email" id="signupEmail" />
+
+        <label for="signupUsername">Nombre de usuario</label>
+        <input type="text" id="signupUsername" />
+
+        <div class="row">
+          <div>
+            <label for="signupPassword">Contrasena</label>
+            <input type="password" id="signupPassword" />
+          </div>
+          <div>
+            <label for="signupPasswordConfirm">Repetir contrasena</label>
+            <input type="password" id="signupPasswordConfirm" />
+          </div>
+        </div>
+
+        <label for="signupAdreca">Direccion</label>
+        <input type="text" id="signupAdreca" />
+
+        <div class="row">
+          <div>
+            <label for="signupCiutat">Ciudad</label>
+            <input type="text" id="signupCiutat" />
+          </div>
+          <div>
+            <label for="signupTelefon">Telefono</label>
+            <input type="tel" id="signupTelefon" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="signup" class="btn-green">Crear cuenta</button>
+          <button type="button" id="tornarLogin" class="btn-gray">Volver</button>
+        </div>
+      </section>
+
+      <section class="panel" id="empresaForm" style="display: none;">
+        <h2 id="empresaFormTitol">Nuevo producto</h2>
+        <input type="hidden" id="prodId" />
+        <input type="hidden" id="prodCompradors" value="0" />
+
+        <label for="prodTitol">Nombre del producto</label>
+        <input type="text" id="prodTitol" />
+
+        <label for="prodDescripcio">Descripcion</label>
+        <textarea id="prodDescripcio"></textarea>
+
+        <div class="row">
+          <div>
+            <label for="prodPreu">Precio</label>
+            <input type="number" id="prodPreu" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="prodStock">Stock</label>
+            <input type="number" id="prodStock" min="0" step="1" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="prodCategoria">Categoria</label>
+            <input type="text" id="prodCategoria" />
+          </div>
+          <div>
+            <label for="prodImatge">URL de imagen</label>
+            <input type="url" id="prodImatge" placeholder="https://..." />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="saveProd" class="btn-green">Guardar producto</button>
+          <button type="button" id="cancelarEdicio" class="btn-gray" style="display: none;">
+            Cancelar edicion
+          </button>
+        </div>
+      </section>
+
+      <section class="panel" id="empresaTableSection" style="display: none;">
+        <h3>Mis productos</h3>
+        <table id="listProdEmpresa"></table>
+      </section>
+
+      <section class="panel" id="particularHeader" style="display: none;">
+        <h3>Catalogo</h3>
+        <p class="small">Aqui puedes ver todos los productos y comprar una cantidad sencilla.</p>
+      </section>
+
+      <section class="catalogo" id="productesCataleg" style="display: none;"></section>
+      <p id="catalogBuit" class="small" style="display: none;">No hay productos disponibles.</p>
+    </main>
+
+    <div id="alert"></div>
+
+    <footer>RePia - Gestion sostenible</footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/firestore.js"></script>
+    <script>
+      const usuaris = db.collection("usuaris");
+      const productes = db.collection("items");
+
+      let uidActual = null;
+      let creandoUsuario = false;
+
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      function mostrarAlerta(texto, tipo) {
+        const aviso = el("alert");
+        aviso.textContent = texto;
+        aviso.className = tipo;
+        aviso.style.display = "block";
+
+        setTimeout(function () {
+          aviso.style.display = "none";
+        }, 2500);
+      }
+
+      function authDisponible() {
+        const protocolo = window.location.protocol;
+        return protocolo === "http:" || protocolo === "https:" || protocolo === "chrome-extension:";
+      }
+
+      function textoErrorAuth(error) {
+        if (!error || !error.code) {
+          return "Error de autenticacion";
+        }
+
+        const errores = {
+          "auth/invalid-email": "El correo no es valido",
+          "auth/email-already-in-use": "Ese correo ya existe",
+          "auth/weak-password": "La contrasena es demasiado corta",
+          "auth/wrong-password": "Contrasena incorrecta",
+          "auth/user-not-found": "Usuario no encontrado",
+          "auth/popup-closed-by-user": "Has cerrado la ventana de Google",
+          "auth/operation-not-supported-in-this-environment": "Abre la web con http://localhost o https",
+          "auth/web-storage-unsupported": "El navegador no permite guardar la sesion"
+        };
+
+        return errores[error.code] || error.message || "Error de autenticacion";
+      }
+
+      function ocultarTodo() {
+        el("loginForm").style.display = "none";
+        el("signupForm").style.display = "none";
+        el("empresaForm").style.display = "none";
+        el("empresaTableSection").style.display = "none";
+        el("particularHeader").style.display = "none";
+        el("productesCataleg").style.display = "none";
+        el("catalogBuit").style.display = "none";
+      }
+
+      function mostrarLogin() {
+        ocultarTodo();
+        el("loginForm").style.display = "block";
+        el("userInfo").style.display = "none";
+        el("headerTagline").style.display = "block";
+      }
+
+      function mostrarRegistro() {
+        ocultarTodo();
+        el("signupForm").style.display = "block";
+        el("userInfo").style.display = "none";
+        el("headerTagline").style.display = "block";
+      }
+
+      function mostrarUsuario(nombre) {
+        el("headerTagline").style.display = "none";
+        el("userInfo").style.display = "flex";
+        el("userName").textContent = nombre || "";
+      }
+
+      function limpiarFormularioProducto() {
+        el("prodId").value = "";
+        el("prodTitol").value = "";
+        el("prodDescripcio").value = "";
+        el("prodPreu").value = "";
+        el("prodStock").value = "";
+        el("prodCategoria").value = "";
+        el("prodImatge").value = "";
+        el("prodCompradors").value = 0;
+        el("empresaFormTitol").textContent = "Nuevo producto";
+        el("cancelarEdicio").style.display = "none";
+      }
+
+      async function mostrarAplicacion() {
+        ocultarTodo();
+        el("empresaForm").style.display = "block";
+        el("empresaTableSection").style.display = "block";
+        el("particularHeader").style.display = "block";
+        el("productesCataleg").style.display = "grid";
+        await cargarMisProductos();
+        await cargarCatalogo();
+      }
+
+      async function cargarMisProductos() {
+        const tabla = el("listProdEmpresa");
+        tabla.innerHTML =
+          "<thead><tr><th>Producto</th><th>Categoria</th><th>Precio</th><th>Stock</th><th>Compradores</th><th>Acciones</th></tr></thead><tbody></tbody>";
+
+        const tbody = tabla.querySelector("tbody");
+        const docs = await selectWhere(productes, "empresaUid", "==", uidActual);
+
+        if (docs.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='6'>Todavia no has creado productos.</td></tr>";
+          return;
+        }
+
+        docs.forEach(function (doc) {
+          const data = doc.data();
+          const fila = document.createElement("tr");
+
+          fila.innerHTML =
+            "<td>" + (data.title || "") + "</td>" +
+            "<td>" + (data.categoria || "-") + "</td>" +
+            "<td>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</td>" +
+            "<td>" + (data.stock != null ? data.stock : "-") + "</td>" +
+            "<td>" + (data.compradors || 0) + "</td>" +
+            "<td>" +
+            "<button type='button' class='btn-gray' onclick=\"editarProducte('" + doc.id + "')\">Editar</button> " +
+            "<button type='button' class='btn-red' onclick=\"eliminarProducte('" + doc.id + "')\">Eliminar</button>" +
+            "</td>";
+
+          tbody.appendChild(fila);
+        });
+      }
+
+      async function cargarCatalogo() {
+        const contenedor = el("productesCataleg");
+        const docs = await selectAll(productes);
+
+        contenedor.innerHTML = "";
+
+        if (docs.length === 0) {
+          contenedor.style.display = "none";
+          el("catalogBuit").style.display = "block";
+          return;
+        }
+
+        contenedor.style.display = "grid";
+        el("catalogBuit").style.display = "none";
+
+        docs.forEach(function (doc) {
+          const data = doc.data();
+          const stock = data.stock != null ? Number(data.stock) : 0;
+          const imagen = data.imatge ? data.imatge : "";
+          const tarjeta = document.createElement("div");
+          tarjeta.className = "card";
+
+          tarjeta.innerHTML =
+            (imagen
+              ? "<img src='" + imagen + "' alt='Imagen del producto' onerror=\"this.style.display='none'\" />"
+              : "<div style='height:180px;background:#eee;display:flex;align-items:center;justify-content:center;'>Sin imagen</div>") +
+            "<div class='card-body'>" +
+            "<h4>" + (data.title || "Sin nombre") + "</h4>" +
+            "<p class='small'>" + (data.content || "") + "</p>" +
+            "<p class='small'>Categoria: " + (data.categoria || "-") + "</p>" +
+            "<p class='small'>Stock: " + stock + "</p>" +
+            "<p class='small'>Compradores: " + (data.compradors || 0) + "</p>" +
+            "<p class='price'>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</p>" +
+            "<div class='actions'>" +
+            "<input type='number' id='qty-" + doc.id + "' min='1' max='" + (stock > 0 ? stock : 1) + "' value='1' " + (stock <= 0 ? "disabled" : "") + " />" +
+            "<button type='button' class='btn-green' onclick=\"comprarProducte('" + doc.id + "')\" " + (stock <= 0 ? "disabled" : "") + ">" +
+            (stock > 0 ? "Comprar" : "Sin stock") +
+            "</button>" +
+            "</div>" +
+            "</div>";
+
+          contenedor.appendChild(tarjeta);
+        });
+      }
+
+      async function guardarProducto() {
+        const id = el("prodId").value;
+        const titulo = el("prodTitol").value.trim();
+        const descripcion = el("prodDescripcio").value.trim();
+        const precio = parseFloat(el("prodPreu").value);
+        const stock = parseInt(el("prodStock").value, 10);
+        const categoria = el("prodCategoria").value.trim();
+        const compradores = parseInt(el("prodCompradors").value, 10) || 0;
+        const imagen = el("prodImatge").value.trim();
+
+        if (!titulo) {
+          mostrarAlerta("El nombre del producto es obligatorio", "error");
+          return;
+        }
+
+        if (isNaN(precio) || precio < 0) {
+          mostrarAlerta("Introduce un precio valido", "error");
+          return;
+        }
+
+        if (isNaN(stock) || stock < 0) {
+          mostrarAlerta("Introduce un stock valido", "error");
+          return;
+        }
+
+        const producto = {
+          title: titulo,
+          content: descripcion,
+          preu: precio,
+          stock: stock,
+          categoria: categoria,
+          compradors: compradores,
+          imatge: imagen,
+          empresaUid: uidActual,
+          ownerUid: uidActual
+        };
+
+        try {
+          if (id) {
+            await updateById(productes, id, producto);
+            mostrarAlerta("Producto actualizado", "ok");
+          } else {
+            await add(productes, producto);
+            mostrarAlerta("Producto guardado", "ok");
+          }
+
+          limpiarFormularioProducto();
+          await cargarMisProductos();
+          await cargarCatalogo();
+        } catch (error) {
+          mostrarAlerta("No se pudo guardar el producto", "error");
+        }
+      }
+
+      async function editarProducte(id) {
+        const snap = await selectById(productes, id);
+        if (!snap.exists) {
+          return;
+        }
+
+        const data = snap.data();
+
+        if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
+          mostrarAlerta("Solo puedes editar tus productos", "error");
+          return;
+        }
+
+        el("prodId").value = id;
+        el("prodTitol").value = data.title || "";
+        el("prodDescripcio").value = data.content || "";
+        el("prodPreu").value = data.preu != null ? data.preu : "";
+        el("prodStock").value = data.stock != null ? data.stock : "";
+        el("prodCategoria").value = data.categoria || "";
+        el("prodCompradors").value = data.compradors || 0;
+        el("prodImatge").value = data.imatge || "";
+        el("empresaFormTitol").textContent = "Editar producto";
+        el("cancelarEdicio").style.display = "inline-block";
+        el("empresaForm").scrollIntoView();
+      }
+
+      async function eliminarProducte(id) {
+        const snap = await selectById(productes, id);
+        if (!snap.exists) {
+          return;
+        }
+
+        const data = snap.data();
+
+        if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
+          mostrarAlerta("Solo puedes eliminar tus productos", "error");
+          return;
+        }
+
+        if (!window.confirm("Seguro que quieres eliminar este producto?")) {
+          return;
+        }
+
+        try {
+          await deleteById(productes, id);
+          mostrarAlerta("Producto eliminado", "ok");
+          await cargarMisProductos();
+          await cargarCatalogo();
+        } catch (error) {
+          mostrarAlerta("No se pudo eliminar el producto", "error");
+        }
+      }
+
+      async function comprarProducte(id) {
+        const inputCantidad = el("qty-" + id);
+        if (!inputCantidad) {
+          return;
+        }
+
+        const cantidad = parseInt(inputCantidad.value, 10);
+
+        if (isNaN(cantidad) || cantidad < 1) {
+          mostrarAlerta("Introduce una cantidad valida", "error");
+          return;
+        }
+
+        try {
+          const snap = await selectById(productes, id);
+
+          if (!snap.exists) {
+            mostrarAlerta("Ese producto ya no existe", "error");
+            await cargarCatalogo();
+            return;
+          }
+
+          const data = snap.data();
+          const stockActual = data.stock != null ? Number(data.stock) : 0;
+
+          if (cantidad > stockActual) {
+            mostrarAlerta("No hay suficiente stock", "error");
+            inputCantidad.value = stockActual > 0 ? stockActual : 1;
+            await cargarCatalogo();
+            return;
+          }
+
+          const stockNuevo = stockActual - cantidad;
+          const compradoresNuevos = (Number(data.compradors) || 0) + 1;
+
+          await updateById(productes, id, {
+            stock: stockNuevo,
+            compradors: compradoresNuevos
+          });
+
+          sessionStorage.setItem("repiaCompra", JSON.stringify({
+            producto: data.title || "Producto",
+            cantidad: cantidad,
+            stockRestante: stockNuevo
+          }));
+
+          await cargarMisProductos();
+          await cargarCatalogo();
+          mostrarAlerta("Compra hecha. Te llevamos a los puntos de recogida", "ok");
+
+          setTimeout(function () {
+            window.location.href = "puntos-recogida.html";
+          }, 1700);
+        } catch (error) {
+          mostrarAlerta("No se pudo completar la compra", "error");
+        }
+      }
+
+      async function cargarUsuario(uid) {
+        let nombre = "";
+
+        try {
+          const snap = await usuaris.doc(uid).get();
+          if (snap.exists) {
+            const data = snap.data();
+            nombre = data.username || data.email || "";
+          }
+        } catch (error) {
+          nombre = "";
+        }
+
+        if (!nombre && auth.currentUser) {
+          nombre = auth.currentUser.displayName || auth.currentUser.email || "";
+        }
+
+        return nombre;
+      }
+
+      async function entrarConGoogle() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
+          return;
+        }
+
+        try {
+          await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        } catch (error) {
+          mostrarAlerta(textoErrorAuth(error), "error");
+        }
+      }
+
+      async function entrar() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
+          return;
+        }
+
+        const email = el("loginEmail").value.trim();
+        const password = el("loginPassword").value;
+
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+        } catch (error) {
+          mostrarAlerta(textoErrorAuth(error), "error");
+        }
+      }
+
+      async function registrar() {
+        if (!authDisponible()) {
+          mostrarAlerta("Abre la app con http://localhost o https", "error");
+          return;
+        }
+
+        const email = el("signupEmail").value.trim();
+        const username = el("signupUsername").value.trim();
+        const password = el("signupPassword").value;
+        const passwordConfirm = el("signupPasswordConfirm").value;
+        const adreca = el("signupAdreca").value.trim();
+        const ciutat = el("signupCiutat").value.trim();
+        const telefon = el("signupTelefon").value.trim();
+
+        if (!email || email.indexOf("@") < 1) {
+          mostrarAlerta("Correo incorrecto", "error");
+          return;
+        }
+
+        if (!username || username.length < 3) {
+          mostrarAlerta("El nombre debe tener al menos 3 caracteres", "error");
+          return;
+        }
+
+        if (!password || password.length < 8) {
+          mostrarAlerta("La contrasena debe tener al menos 8 caracteres", "error");
+          return;
+        }
+
+        if (password !== passwordConfirm) {
+          mostrarAlerta("Las contrasenas no coinciden", "error");
+          return;
+        }
+
+        if (!adreca || !ciutat || !telefon) {
+          mostrarAlerta("Completa direccion, ciudad y telefono", "error");
+          return;
+        }
+
+        creandoUsuario = true;
+
+        try {
+          const cred = await auth.createUserWithEmailAndPassword(email, password);
+
+          await usuaris.doc(cred.user.uid).set({
+            username: username,
+            email: email,
+            adreca: adreca,
+            ciutat: ciutat,
+            telefon: telefon,
+            rol: "usuari"
+          });
+
+          creandoUsuario = false;
+          uidActual = cred.user.uid;
+          mostrarUsuario(username);
+          limpiarFormularioProducto();
+          await mostrarAplicacion();
+          mostrarAlerta("Cuenta creada correctamente", "ok");
+        } catch (error) {
+          creandoUsuario = false;
+          mostrarAlerta(textoErrorAuth(error), "error");
+        }
+      }
+
+      el("login").addEventListener("click", entrar);
+      el("loginGoogle").addEventListener("click", entrarConGoogle);
+      el("newUser").addEventListener("click", mostrarRegistro);
+      el("tornarLogin").addEventListener("click", mostrarLogin);
+      el("signup").addEventListener("click", registrar);
+      el("saveProd").addEventListener("click", guardarProducto);
+      el("cancelarEdicio").addEventListener("click", limpiarFormularioProducto);
+
+      el("btnLogout").addEventListener("click", async function () {
+        sessionStorage.removeItem("repiaCompra");
+
+        try {
+          await auth.signOut();
+        } catch (error) {
+        }
+
+        uidActual = null;
+        limpiarFormularioProducto();
+        mostrarLogin();
+      });
+
+      window.editarProducte = editarProducte;
+      window.eliminarProducte = eliminarProducte;
+      window.comprarProducte = comprarProducte;
+
+      if (!authDisponible()) {
+        setTimeout(function () {
+          mostrarAlerta("Firebase Auth necesita abrirse con http://localhost o https", "error");
+        }, 300);
+      }
+
+      if (authDisponible()) {
+        auth.onAuthStateChanged(async function (user) {
+          if (!user) {
+            uidActual = null;
+            limpiarFormularioProducto();
+            mostrarLogin();
+            return;
+          }
+
+          if (creandoUsuario) {
+            return;
+          }
+
+          if (uidActual === user.uid) {
+            return;
+          }
+
+          uidActual = user.uid;
+          limpiarFormularioProducto();
+          mostrarUsuario(await cargarUsuario(user.uid));
+          await mostrarAplicacion();
+        });
+      } else {
+        mostrarLogin();
+      }
+    </script>
+  </body>
+</html>
