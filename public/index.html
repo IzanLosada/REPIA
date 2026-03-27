@@ -12,22 +12,114 @@
         box-sizing: border-box;
       }
 
+      /* ── VARIABLES MODO CLARO (defecto) ── */
+      body {
+        --bg-main:       linear-gradient(135deg, #f0f4f8 0%, #d9e8f0 100%);
+        --surface:       #ffffff;
+        --surface-alt:   #f5f9f5;
+        --text-main:     #1a2332;
+        --text-sub:      #666666;
+        --text-muted:    #999999;
+        --border-color:  #e0e8f0;
+        --border-table:  #e8eff8;
+        --card-shadow:   0 2px 8px rgba(0,0,0,0.06);
+        --panel-shadow:  0 4px 12px rgba(0,0,0,0.08);
+        --input-bg:      #ffffff;
+        --input-color:   #1a2332;
+        --header-bg:     linear-gradient(135deg, #2f7d32 0%, #1b5e20 100%);
+        --footer-color:  #999999;
+        --footer-border: #e8eff8;
+        --table-hover:   #f8fbf9;
+        --th-bg:         linear-gradient(135deg, #2f7d32 0%, #1b5e20 100%);
+        --btn-gray-bg:   #f5f7fa;
+        --btn-gray-color:#1a2332;
+        --btn-gray-border:#e0e8f0;
+        --separator-bg:  linear-gradient(90deg, transparent, #e0e8f0, transparent);
+        --placeholder-bg:linear-gradient(135deg, #f0f4f8 0%, #e8eff8 100%);
+        --placeholder-color:#999;
+        --search-bg:     #ffffff;
+        --toggle-bg:     rgba(255,255,255,0.15);
+        --toggle-border: rgba(255,255,255,0.2);
+        --toggle-text:   rgba(255,255,255,0.9);
+        --panel-h2:      #1b5e20;
+        --panel-h3:      #2f7d32;
+      }
+
+      /* ── VARIABLES MODO OSCURO ── */
+      body.dark-mode {
+        --bg-main:       linear-gradient(135deg, #0d1b0e 0%, #0a1a0a 100%);
+        --surface:       #162216;
+        --surface-alt:   #1a2b1a;
+        --text-main:     #ddeedd;
+        --text-sub:      #8ab88a;
+        --text-muted:    #5a8a5a;
+        --border-color:  #2a3f2a;
+        --border-table:  #2a3f2a;
+        --card-shadow:   0 2px 8px rgba(0,0,0,0.5);
+        --panel-shadow:  0 4px 12px rgba(0,0,0,0.4);
+        --input-bg:      #1a2b1a;
+        --input-color:   #ddeedd;
+        --header-bg:     linear-gradient(135deg, #1a3d1a 0%, #0d2b0d 100%);
+        --footer-color:  #5a8a5a;
+        --footer-border: #2a3f2a;
+        --table-hover:   #1e321e;
+        --th-bg:         linear-gradient(135deg, #1b5e20 0%, #0d3b10 100%);
+        --btn-gray-bg:   #1e301e;
+        --btn-gray-color:#ddeedd;
+        --btn-gray-border:#2a3f2a;
+        --separator-bg:  linear-gradient(90deg, transparent, #2a3f2a, transparent);
+        --placeholder-bg:linear-gradient(135deg, #162216 0%, #1a2b1a 100%);
+        --placeholder-color:#5a8a5a;
+        --search-bg:     #1a2b1a;
+        --toggle-bg:     rgba(0,0,0,0.3);
+        --toggle-border: rgba(255,255,255,0.1);
+        --toggle-text:   rgba(200,230,200,0.9);
+        --panel-h2:      #81c784;
+        --panel-h3:      #66bb6a;
+      }
+
       body {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: linear-gradient(135deg, #f0f4f8 0%, #d9e8f0 100%);
-        color: #1a2332;
+        background: var(--bg-main);
+        color: var(--text-main);
         min-height: 100vh;
+        transition: background 0.3s ease, color 0.3s ease;
       }
 
       header {
-        background: linear-gradient(135deg, #2f7d32 0%, #1b5e20 100%);
+        background: var(--header-bg);
         color: white;
-        padding: 16px 20px;
+        padding: 12px 20px;
         box-shadow: 0 6px 20px rgba(47, 125, 50, 0.2);
         position: sticky;
         top: 0;
         z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .controls {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #toggleDark {
+        width: 14px !important;
+        height: 14px !important;
+        object-fit: contain;
+        opacity: 0.85;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+
+      #toggleFont {
+        width: 13px !important;
+        height: 13px !important;
+        object-fit: contain;
+        opacity: 0.85;
       }
 
       .header-top {
@@ -75,11 +167,11 @@
         display: none;
         align-items: center;
         gap: 16px;
-        background: rgba(255, 255, 255, 0.15);
+        background: var(--toggle-bg);
         padding: 10px 18px;
         border-radius: 24px;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid var(--toggle-border);
       }
 
       #userName {
@@ -101,12 +193,13 @@
       }
 
       .panel {
-        background: white;
+        background: var(--surface);
+        color: var(--text-main);
         border: none;
         border-radius: 14px;
         padding: 28px;
         margin-bottom: 28px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--panel-shadow);
         transition: all 0.3s ease;
       }
 
@@ -117,7 +210,7 @@
       .panel h2 {
         margin: 0 0 22px 0;
         font-size: 26px;
-        color: #1b5e20;
+        color: var(--panel-h2);
         border-bottom: 3px solid #2f7d32;
         padding-bottom: 14px;
         font-weight: 700;
@@ -126,7 +219,7 @@
       .panel h3 {
         margin: 0 0 16px 0;
         font-size: 18px;
-        color: #2f7d32;
+        color: var(--panel-h3);
         font-weight: 600;
       }
 
@@ -146,7 +239,7 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #1a2332;
+        color: var(--text-main);
         font-size: 14px;
         letter-spacing: -0.2px;
       }
@@ -156,10 +249,12 @@
         width: 100%;
         font: inherit;
         padding: 13px 15px;
-        border: 2px solid #e0e8f0;
+        border: 2px solid var(--border-color);
         border-radius: 10px;
         transition: all 0.3s ease;
         font-size: 14px;
+        background: var(--input-bg);
+        color: var(--input-color);
       }
 
       input:focus,
@@ -207,18 +302,18 @@
       }
 
       .btn-gray {
-        background: #f5f7fa;
-        color: #1a2332;
+        background: var(--btn-gray-bg);
+        color: var(--btn-gray-color);
         padding: 13px 24px;
-        border: 2px solid #e0e8f0;
+        border: 2px solid var(--btn-gray-border);
         border-radius: 10px;
         font-size: 15px;
         transition: all 0.3s ease;
       }
 
       .btn-gray:hover {
-        background: #eef2f8;
-        border-color: #d0d8e8;
+        background: var(--surface-alt);
+        border-color: var(--border-color);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       }
 
@@ -239,9 +334,9 @@
       }
 
       .btn-google {
-        background: white;
-        color: #1a2332;
-        border: 2px solid #e0e8f0;
+        background: var(--btn-gray-bg);
+        color: var(--btn-gray-color);
+        border: 2px solid var(--btn-gray-border);
         padding: 13px 24px;
         border-radius: 10px;
         display: flex;
@@ -259,8 +354,8 @@
       }
 
       .btn-google:hover {
-        background: #f9fafc;
-        border-color: #d0d8e8;
+        background: var(--surface-alt);
+        border-color: var(--border-color);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
@@ -305,7 +400,7 @@
       .product-form-container {
         display: none;
         padding: 24px;
-        background: linear-gradient(135deg, #f5f9f5 0%, #f0f6f0 100%);
+        background: var(--surface-alt);
         border-radius: 12px;
         margin-bottom: 24px;
         border-left: 5px solid #2f7d32;
@@ -324,20 +419,21 @@
 
       th,
       td {
-        border: 1px solid #e8eff8;
+        border: 1px solid var(--border-table);
         padding: 14px;
         text-align: left;
         font-size: 14px;
+        color: var(--text-main);
       }
 
       th {
-        background: linear-gradient(135deg, #2f7d32 0%, #1b5e20 100%);
+        background: var(--th-bg);
         color: white;
         font-weight: 600;
       }
 
       tr:hover {
-        background: #f8fbf9;
+        background: var(--table-hover);
       }
 
       .catalog-header {
@@ -358,9 +454,9 @@
       .search-container input {
         width: 100%;
         padding-left: 44px;
-        border: 2px solid #e0e8f0;
+        border: 2px solid var(--border-color);
         border-radius: 10px;
-        background: white;
+        background: var(--search-bg);
       }
 
       .search-container input:focus {
@@ -386,19 +482,19 @@
       }
 
       .card {
-        background: white;
-        border: 1px solid #e8eff8;
+        background: var(--surface);
+        border: 1px solid var(--border-color);
         border-radius: 14px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         height: 100%;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        box-shadow: var(--card-shadow);
         transition: all 0.3s ease;
       }
 
       .card:hover {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         transform: translateY(-6px);
       }
 
@@ -406,17 +502,17 @@
         width: 100%;
         height: 210px;
         object-fit: cover;
-        background: linear-gradient(135deg, #f0f4f8 0%, #e8eff8 100%);
+        background: var(--placeholder-bg);
       }
 
       .card-placeholder {
         width: 100%;
         height: 210px;
-        background: linear-gradient(135deg, #f0f4f8 0%, #e8eff8 100%);
+        background: var(--placeholder-bg);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #999;
+        color: var(--placeholder-color);
         font-size: 14px;
         font-weight: 600;
       }
@@ -431,13 +527,13 @@
       .card-body h4 {
         margin: 0 0 10px 0;
         font-size: 16px;
-        color: #1a2332;
+        color: var(--text-main);
         font-weight: 700;
         line-height: 1.4;
       }
 
       .card-description {
-        color: #666;
+        color: var(--text-sub);
         font-size: 13px;
         margin-bottom: 14px;
         line-height: 1.5;
@@ -449,7 +545,7 @@
 
       .card-info {
         font-size: 13px;
-        color: #777;
+        color: var(--text-sub);
         margin-bottom: 8px;
         display: flex;
         align-items: center;
@@ -464,7 +560,7 @@
       .card-footer {
         margin-top: auto;
         padding-top: 14px;
-        border-top: 1px solid #f0f4f8;
+        border-top: 1px solid var(--border-color);
       }
 
       .price {
@@ -510,8 +606,10 @@
         padding: 10px 10px;
         font-size: 13px;
         text-align: center;
-        border: 2px solid #e0e8f0;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
+        background: var(--input-bg);
+        color: var(--input-color);
       }
 
       .card-actions button {
@@ -523,14 +621,14 @@
       }
 
       .small {
-        color: #666;
+        color: var(--text-sub);
         font-size: 14px;
       }
 
       .empty-state {
         text-align: center;
         padding: 48px 20px;
-        color: #999;
+        color: var(--text-muted);
       }
 
       .empty-state p {
@@ -556,37 +654,26 @@
       }
 
       @keyframes slideIn {
-        from {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
+        from { transform: translateX(400px); opacity: 0; }
+        to   { transform: translateX(0);     opacity: 1; }
       }
 
-      .ok {
-        background: linear-gradient(135deg, #4caf50 0%, #2f7d32 100%);
-      }
-
-      .error {
-        background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
-      }
+      .ok    { background: linear-gradient(135deg, #4caf50 0%, #2f7d32 100%); }
+      .error { background: linear-gradient(135deg, #ef5350 0%, #e53935 100%); }
 
       footer {
         text-align: center;
-        color: #999;
+        color: var(--footer-color);
         padding: 36px 16px;
         font-size: 13px;
-        border-top: 1px solid #e8eff8;
+        border-top: 1px solid var(--footer-border);
         margin-top: 48px;
         font-weight: 500;
       }
 
       .separator {
         height: 2px;
-        background: linear-gradient(90deg, transparent, #e0e8f0, transparent);
+        background: var(--separator-bg);
         margin: 28px 0;
       }
 
@@ -595,22 +682,44 @@
         gap: 28px;
       }
 
+      /* ── CONTROLES TOGGLE ── */
+      .toggle-mode,
+      .toggle-font {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 20px;
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .toggle-mode:hover,
+      .toggle-font:hover {
+        background: rgba(255,255,255,0.25);
+        transform: translateY(-1px);
+      }
+
+      #modeText,
+      #fontText {
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.9);
+        white-space: nowrap;
+      }
+
+      .toggle-mode:hover #toggleDark {
+        transform: rotate(15deg);
+        opacity: 1;
+      }
+
+      /* ── RESPONSIVE ── */
       @media (max-width: 768px) {
-        .row {
-          grid-template-columns: 1fr;
-        }
-
-        .header-logo-section {
-          gap: 8px;
-        }
-
-        .header-logo-section img {
-          height: 36px;
-        }
-
-        header h1 {
-          font-size: 24px;
-        }
+        .row { grid-template-columns: 1fr; }
+        .header-logo-section { gap: 8px; }
+        .header-logo-section img { height: 36px; }
+        header h1 { font-size: 24px; }
 
         #userInfo {
           flex-direction: column;
@@ -619,71 +728,60 @@
           gap: 12px;
         }
 
-        #userInfo button {
-          width: 100%;
-        }
+        #userInfo button { width: 100%; }
 
         .catalog-header {
           flex-direction: column;
           align-items: stretch;
         }
 
-        .search-container {
-          min-width: 100%;
-        }
-
-        .catalogo {
-          grid-template-columns: 1fr;
-        }
+        .search-container { min-width: 100%; }
+        .catalogo { grid-template-columns: 1fr; }
 
         .card-actions {
           flex-direction: column;
         }
 
         .card-actions input,
-        .card-actions button {
-          width: 100%;
-        }
+        .card-actions button { width: 100%; }
 
-        .actions {
-          flex-direction: column;
-        }
-
-        .actions button {
-          width: 100%;
-        }
-
-        table {
-          font-size: 12px;
-        }
-
-        th,
-        td {
-          padding: 8px;
-        }
-
-        .panel {
-          padding: 20px;
-        }
+        .actions { flex-direction: column; }
+        .actions button { width: 100%; }
+        table { font-size: 12px; }
+        th, td { padding: 8px; }
+        .panel { padding: 20px; }
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="header-top">
-        <div class="header-logo-section">
-          <img src="img/logo.png" alt="RePia Logo" />
-          <div class="header-title">
-            <h1>RePia</h1>
-            <p id="headerTagline">Gestión sostenible de productos</p>
-          </div>
+      <span class="tagline" id="headerTagline">Gestió d'ítems</span>
+      <div class="user-info" id="userInfo">
+        <span class="user-role-badge" id="userRoleBadge"></span>
+        <span class="user-name" id="userName"></span>
+        <button id="btnLogout">Tancar sessió</button>
+      </div>
+      <div class="controls">
+        <div class="toggle-mode" onclick="cambiarModo()">
+          <img id="toggleDark" src="img/Captura de pantalla 2026-03-25 181625.png" />
+          <span id="modeText">Dark mode</span>
         </div>
-        <div id="userInfo">
-          <span id="userName"></span>
-          <button id="btnLogout" class="btn-gray">Cerrar sesión</button>
+        <div class="toggle-font" onclick="cambiarFuente()">
+          <img id="toggleFont" src="img/Captura de pantalla 2026-03-26 165231.png" />
+          <span id="fontText">Agrandar letra</span>
         </div>
       </div>
     </header>
+
+    <div class="header-top" style="max-width:1200px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:12px;">
+      <div class="header-logo-section">
+        <img src="img/logo.png" alt="RePia Logo" />
+        <div class="header-title">
+          <h1 style="margin:0;color:white;font-size:28px;">RePia</h1>
+          <p style="margin:0;color:rgba(255,255,255,0.9);font-size:12px;">Gestión sostenible de productos</p>
+        </div>
+      </div>
+    </div>
 
     <main>
       <section class="panel" id="loginForm">
@@ -693,43 +791,36 @@
             <label for="loginEmail">Correo Electrónico</label>
             <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com" />
           </div>
-
           <div>
             <label for="loginPassword">Contraseña</label>
             <input type="password" id="loginPassword" placeholder="Tu contraseña" />
           </div>
-
           <div class="actions">
             <button type="button" id="login" class="btn-green">Entrar</button>
           </div>
-
-          <div style="text-align: center; margin: 16px 0;">
-            <div style="color: #999; font-size: 13px; font-weight: 500;">— O —</div>
+          <div style="text-align:center; margin:16px 0;">
+            <div style="color:var(--text-muted); font-size:13px; font-weight:500;">— O —</div>
           </div>
-
           <div class="actions">
             <button type="button" id="loginGoogle" class="btn-google">Entrar con Google</button>
           </div>
-
           <div class="actions">
             <button type="button" id="newUser" class="btn-gray">¿Primera vez? Crear cuenta</button>
           </div>
         </div>
       </section>
 
-      <section class="panel" id="signupForm" style="display: none;">
+      <section class="panel" id="signupForm" style="display:none;">
         <h2>Crear Nueva Cuenta</h2>
         <div class="form-section">
           <div>
             <label for="signupEmail">Correo Electrónico</label>
             <input type="email" id="signupEmail" placeholder="usuario@ejemplo.com" />
           </div>
-
           <div>
             <label for="signupUsername">Nombre de Usuario</label>
             <input type="text" id="signupUsername" placeholder="Tu nombre de usuario" />
           </div>
-
           <div class="row">
             <div>
               <label for="signupPassword">Contraseña</label>
@@ -740,12 +831,10 @@
               <input type="password" id="signupPasswordConfirm" placeholder="Confirma tu contraseña" />
             </div>
           </div>
-
           <div>
             <label for="signupAdreca">Dirección</label>
             <input type="text" id="signupAdreca" placeholder="Tu dirección completa" />
           </div>
-
           <div class="row">
             <div>
               <label for="signupCiutat">Ciudad</label>
@@ -756,7 +845,6 @@
               <input type="tel" id="signupTelefon" placeholder="+34 600 000 000" />
             </div>
           </div>
-
           <div class="actions">
             <button type="button" id="signup" class="btn-green">Crear Cuenta</button>
             <button type="button" id="tornarLogin" class="btn-gray">Volver</button>
@@ -764,30 +852,27 @@
         </div>
       </section>
 
-      <section class="panel" id="empresaPanel" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h3 style="margin: 0;">Gestión de Productos</h3>
+      <section class="panel" id="empresaPanel" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="margin:0;">Gestión de Productos</h3>
           <button type="button" id="btnNewProduct" class="btn-new-product">Nuevo Producto</button>
         </div>
 
         <div id="productFormContainer" class="product-form-container">
-          <h3 style="margin-top: 0; color: #1b5e20;">
+          <h3 style="margin-top:0; color:var(--panel-h2);">
             <span id="empresaFormTitol">Crear Nuevo Producto</span>
           </h3>
           <input type="hidden" id="prodId" />
           <input type="hidden" id="prodCompradors" value="0" />
-
           <div class="form-section">
             <div>
               <label for="prodTitol">Nombre del Producto</label>
               <input type="text" id="prodTitol" placeholder="Nombre del producto" />
             </div>
-
             <div>
               <label for="prodDescripcio">Descripción</label>
               <textarea id="prodDescripcio" placeholder="Describe tu producto..."></textarea>
             </div>
-
             <div class="row">
               <div>
                 <label for="prodPreu">Precio (EUR)</label>
@@ -798,7 +883,6 @@
                 <input type="number" id="prodStock" min="0" step="1" placeholder="0" />
               </div>
             </div>
-
             <div class="row">
               <div>
                 <label for="prodCategoria">Categoría</label>
@@ -809,46 +893,35 @@
                 <input type="url" id="prodImatge" placeholder="https://ejemplo.com/imagen.jpg" />
               </div>
             </div>
-
             <div class="actions">
               <button type="button" id="saveProd" class="btn-green">Guardar Producto</button>
-              <button type="button" id="cancelarEdicio" class="btn-gray" style="display: none;">
-                Cancelar Edición
-              </button>
+              <button type="button" id="cancelarEdicio" class="btn-gray" style="display:none;">Cancelar Edición</button>
             </div>
           </div>
         </div>
 
         <div class="separator"></div>
-
-        <h3 id="misProductosTitle" style="display: none;">Mis Productos</h3>
-        <div id="empresaTableSection" style="display: none;">
+        <h3 id="misProductosTitle" style="display:none;">Mis Productos</h3>
+        <div id="empresaTableSection" style="display:none;">
           <table id="listProdEmpresa"></table>
         </div>
       </section>
 
-      <section class="panel" id="catalogoPanel" style="display: none;">
+      <section class="panel" id="catalogoPanel" style="display:none;">
         <h2>Catálogo de Productos</h2>
-
         <div class="catalog-header">
           <div class="search-container">
-            <input 
-              type="text" 
-              id="searchProducts" 
-              placeholder="Buscar productos por nombre..."
-            />
+            <input type="text" id="searchProducts" placeholder="Buscar productos por nombre..." />
           </div>
         </div>
-
-        <div id="productesCataleg" class="catalogo" style="display: none;"></div>
-        <div id="catalogBuit" class="empty-state" style="display: none;">
+        <div id="productesCataleg" class="catalogo" style="display:none;"></div>
+        <div id="catalogBuit" class="empty-state" style="display:none;">
           <p>📦 No hay productos disponibles</p>
         </div>
       </section>
     </main>
 
     <div id="alert"></div>
-
     <footer>RePia — Gestión Sostenible de Productos 🌱</footer>
 
     <script src="js/config.js"></script>
@@ -858,95 +931,153 @@
       const productes = db.collection("items");
 
       const puntosRecogida = [
-        { nombre: "Madrid Centro", ciudad: "Madrid", direccion: "Calle Arenal 8", lat: 40.4172, lng: -3.7036 },
-        { nombre: "Barcelona Eixample", ciudad: "Barcelona", direccion: "Carrer del Consell de Cent 321", lat: 41.3912, lng: 2.1678 },
-        { nombre: "Valencia Ruzafa", ciudad: "Valencia", direccion: "Calle Sueca 42", lat: 39.4628, lng: -0.3716 },
-        { nombre: "Sevilla Nervion", ciudad: "Sevilla", direccion: "Avenida de la Buhaira 12", lat: 37.3877, lng: -5.9723 },
-        { nombre: "Malaga Centro", ciudad: "Malaga", direccion: "Explanada de la Estacion 4", lat: 36.7134, lng: -4.4328 },
-        { nombre: "Bilbao Abando", ciudad: "Bilbao", direccion: "Gran Via 41", lat: 43.2632, lng: -2.9349 },
-        { nombre: "Zaragoza Delicias", ciudad: "Zaragoza", direccion: "Avenida de Navarra 54", lat: 41.6479, lng: -0.9013 },
-        { nombre: "Palma Santa Catalina", ciudad: "Palma", direccion: "Carrer de Sant Magi 64", lat: 39.5698, lng: 2.6385 }
+        { nombre: "Madrid Centro",      ciudad: "Madrid",    direccion: "Calle Arenal 8",                  lat: 40.4172, lng: -3.7036 },
+        { nombre: "Barcelona Eixample", ciudad: "Barcelona", direccion: "Carrer del Consell de Cent 321",  lat: 41.3912, lng:  2.1678 },
+        { nombre: "Valencia Ruzafa",    ciudad: "Valencia",  direccion: "Calle Sueca 42",                  lat: 39.4628, lng: -0.3716 },
+        { nombre: "Sevilla Nervion",    ciudad: "Sevilla",   direccion: "Avenida de la Buhaira 12",        lat: 37.3877, lng: -5.9723 },
+        { nombre: "Malaga Centro",      ciudad: "Malaga",    direccion: "Explanada de la Estacion 4",      lat: 36.7134, lng: -4.4328 },
+        { nombre: "Bilbao Abando",      ciudad: "Bilbao",    direccion: "Gran Via 41",                     lat: 43.2632, lng: -2.9349 },
+        { nombre: "Zaragoza Delicias",  ciudad: "Zaragoza",  direccion: "Avenida de Navarra 54",           lat: 41.6479, lng: -0.9013 },
+        { nombre: "Palma Santa Catalina",ciudad:"Palma",     direccion: "Carrer de Sant Magi 64",          lat: 39.5698, lng:  2.6385 }
       ];
 
-      let uidActual = null;
-      let creandoUsuario = false;
+      let uidActual       = null;
+      let creandoUsuario  = false;
       let productosOriginales = [];
 
-      function el(id) {
-        return document.getElementById(id);
+      function el(id) { return document.getElementById(id); }
+
+      /* ══════════════════════════════════════
+         MODO CLARO / OSCURO
+      ══════════════════════════════════════ */
+      function cambiarModo() {
+        if (document.body.classList.contains("dark-mode")) {
+          activarModoClaro();
+        } else {
+          activarModoOscuro();
+        }
       }
 
+      function activarModoClaro() {
+        document.body.classList.remove("dark-mode");
+        el("modeText").textContent = "Dark mode";
+        el("toggleDark").src = "img/Captura de pantalla 2026-03-25 181625.png";
+        localStorage.setItem("modo", "light");
+      }
+
+      function activarModoOscuro() {
+        document.body.classList.add("dark-mode");
+        el("modeText").textContent = "Light mode";
+        el("toggleDark").src = "img/Captura de pantalla 2026-03-25 181602.png";
+        localStorage.setItem("modo", "dark");
+      }
+
+      /* ══════════════════════════════════════
+         TAMAÑO DE FUENTE
+      ══════════════════════════════════════ */
+      let letraGrande = false;
+
+      function cambiarFuente() {
+        letraGrande = !letraGrande;
+        if (letraGrande) {
+          document.body.style.fontSize = "18px";
+          el("fontText").textContent = "Reducir letra";
+          localStorage.setItem("letraGrande", "true");
+        } else {
+          document.body.style.fontSize = "";
+          el("fontText").textContent = "Agrandar letra";
+          localStorage.setItem("letraGrande", "false");
+        }
+      }
+
+      /* ══════════════════════════════════════
+         CARGAR PREFERENCIAS AL INICIO
+      ══════════════════════════════════════ */
+      window.addEventListener("load", function () {
+        const modoGuardado    = localStorage.getItem("modo");
+        const fuenteGuardada  = localStorage.getItem("letraGrande");
+
+        if (modoGuardado === "dark") {
+          activarModoOscuro();
+        }
+
+        if (fuenteGuardada === "true") {
+          letraGrande = true;
+          document.body.style.fontSize = "18px";
+          el("fontText").textContent = "Reducir letra";
+        }
+      });
+
+      /* ══════════════════════════════════════
+         ALERTAS
+      ══════════════════════════════════════ */
       function mostrarAlerta(texto, tipo) {
         const aviso = el("alert");
         aviso.textContent = texto;
-        aviso.className = tipo;
+        aviso.className   = tipo;
         aviso.style.display = "block";
-
-        setTimeout(function () {
-          aviso.style.display = "none";
-        }, 2500);
+        setTimeout(function () { aviso.style.display = "none"; }, 2500);
       }
 
       function authDisponible() {
-        const protocolo = window.location.protocol;
-        return protocolo === "http:" || protocolo === "https:" || protocolo === "chrome-extension:";
+        const p = window.location.protocol;
+        return p === "http:" || p === "https:" || p === "chrome-extension:";
       }
 
       function textoErrorAuth(error) {
-        if (!error || !error.code) {
-          return "Error de autenticación";
-        }
-
+        if (!error || !error.code) return "Error de autenticación";
         const errores = {
-          "auth/invalid-email": "El correo no es válido",
-          "auth/email-already-in-use": "Ese correo ya existe",
-          "auth/weak-password": "La contraseña es demasiado corta",
-          "auth/wrong-password": "Contraseña incorrecta",
-          "auth/user-not-found": "Usuario no encontrado",
-          "auth/popup-closed-by-user": "Has cerrado la ventana de Google",
+          "auth/invalid-email":          "El correo no es válido",
+          "auth/email-already-in-use":   "Ese correo ya existe",
+          "auth/weak-password":          "La contraseña es demasiado corta",
+          "auth/wrong-password":         "Contraseña incorrecta",
+          "auth/user-not-found":         "Usuario no encontrado",
+          "auth/popup-closed-by-user":   "Has cerrado la ventana de Google",
           "auth/operation-not-supported-in-this-environment": "Abre la web con http://localhost o https",
-          "auth/web-storage-unsupported": "El navegador no permite guardar la sesión"
+          "auth/web-storage-unsupported":"El navegador no permite guardar la sesión"
         };
-
         return errores[error.code] || error.message || "Error de autenticación";
       }
 
+      /* ══════════════════════════════════════
+         NAVEGACIÓN
+      ══════════════════════════════════════ */
       function ocultarTodo() {
-        el("loginForm").style.display = "none";
-        el("signupForm").style.display = "none";
+        el("loginForm").style.display    = "none";
+        el("signupForm").style.display   = "none";
         el("empresaPanel").style.display = "none";
-        el("catalogoPanel").style.display = "none";
+        el("catalogoPanel").style.display= "none";
       }
 
       function mostrarLogin() {
         ocultarTodo();
-        el("loginForm").style.display = "block";
-        el("userInfo").style.display = "none";
+        el("loginForm").style.display  = "block";
+        el("userInfo").style.display   = "none";
         el("headerTagline").style.display = "block";
       }
 
       function mostrarRegistro() {
         ocultarTodo();
         el("signupForm").style.display = "block";
-        el("userInfo").style.display = "none";
+        el("userInfo").style.display   = "none";
         el("headerTagline").style.display = "block";
       }
 
       function mostrarUsuario(nombre) {
         el("headerTagline").style.display = "none";
-        el("userInfo").style.display = "flex";
-        el("userName").textContent = nombre || "";
+        el("userInfo").style.display      = "flex";
+        el("userName").textContent        = nombre || "";
       }
 
       function limpiarFormularioProducto() {
-        el("prodId").value = "";
-        el("prodTitol").value = "";
-        el("prodDescripcio").value = "";
-        el("prodPreu").value = "";
-        el("prodStock").value = "";
-        el("prodCategoria").value = "";
-        el("prodImatge").value = "";
-        el("prodCompradors").value = 0;
+        el("prodId").value          = "";
+        el("prodTitol").value       = "";
+        el("prodDescripcio").value  = "";
+        el("prodPreu").value        = "";
+        el("prodStock").value       = "";
+        el("prodCategoria").value   = "";
+        el("prodImatge").value      = "";
+        el("prodCompradors").value  = 0;
         el("empresaFormTitol").textContent = "Crear Nuevo Producto";
         el("cancelarEdicio").style.display = "none";
         el("productFormContainer").classList.remove("visible");
@@ -954,14 +1085,17 @@
 
       async function mostrarAplicacion() {
         ocultarTodo();
-        el("empresaPanel").style.display = "block";
+        el("empresaPanel").style.display  = "block";
         el("catalogoPanel").style.display = "block";
         await cargarMisProductos();
         await cargarCatalogo();
       }
 
+      /* ══════════════════════════════════════
+         PRODUCTOS — MIS PRODUCTOS
+      ══════════════════════════════════════ */
       async function cargarMisProductos() {
-        const tabla = el("listProdEmpresa");
+        const tabla        = el("listProdEmpresa");
         const titleSection = el("misProductosTitle");
         const tableSection = el("empresaTableSection");
 
@@ -969,7 +1103,7 @@
           "<thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Compradores</th><th>Acciones</th></tr></thead><tbody></tbody>";
 
         const tbody = tabla.querySelector("tbody");
-        const docs = await selectWhere(productes, "empresaUid", "==", uidActual);
+        const docs  = await selectWhere(productes, "empresaUid", "==", uidActual);
 
         if (docs.length === 0) {
           titleSection.style.display = "none";
@@ -984,7 +1118,6 @@
         docs.forEach(function (doc) {
           const data = doc.data();
           const fila = document.createElement("tr");
-
           fila.innerHTML =
             "<td>" + (data.title || "") + "</td>" +
             "<td>" + (data.categoria || "-") + "</td>" +
@@ -992,139 +1125,89 @@
             "<td>" + (data.stock != null ? data.stock : "-") + "</td>" +
             "<td>" + (data.compradors || 0) + "</td>" +
             "<td>" +
-            "<button type='button' class='btn-gray' onclick=\"editarProducte('" + doc.id + "')\">Editar</button> " +
-            "<button type='button' class='btn-red' onclick=\"eliminarProducte('" + doc.id + "')\">Eliminar</button>" +
+              "<button type='button' class='btn-gray' onclick=\"editarProducte('" + doc.id + "')\">Editar</button> " +
+              "<button type='button' class='btn-red'  onclick=\"eliminarProducte('" + doc.id + "')\">Eliminar</button>" +
             "</td>";
-
           tbody.appendChild(fila);
         });
       }
 
+      /* ══════════════════════════════════════
+         PRODUCTOS — CATÁLOGO
+      ══════════════════════════════════════ */
       async function cargarCatalogo() {
         const contenedor = el("productesCataleg");
-        const docs = await selectAll(productes);
+        const docs       = await selectAll(productes);
         productosOriginales = docs;
 
         contenedor.innerHTML = "";
 
         if (docs.length === 0) {
-          contenedor.style.display = "none";
+          contenedor.style.display  = "none";
           el("catalogBuit").style.display = "block";
           return;
         }
 
-        contenedor.style.display = "grid";
+        contenedor.style.display  = "grid";
         el("catalogBuit").style.display = "none";
 
-        docs.forEach(function (doc) {
-          const data = doc.data();
-          const stock = data.stock != null ? Number(data.stock) : 0;
-          const imagen = data.imatge ? data.imatge : "";
-          const tarjeta = document.createElement("div");
-          tarjeta.className = "card";
+        docs.forEach(function (doc) { contenedor.appendChild(crearTarjeta(doc)); });
+      }
 
-          let stockStatusClass = "stock-available";
-          let stockStatusText = "✓ En Stock";
-          if (stock === 0) {
-            stockStatusClass = "stock-unavailable";
-            stockStatusText = "✗ Sin Stock";
-          } else if (stock <= 5) {
-            stockStatusClass = "stock-low";
-            stockStatusText = "⚠ Pocas unidades";
-          }
+      function crearTarjeta(doc) {
+        const data  = doc.data();
+        const stock = data.stock != null ? Number(data.stock) : 0;
+        const imagen= data.imatge || "";
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "card";
 
-          tarjeta.innerHTML =
-            (imagen
-              ? "<img src='" + imagen + "' alt='" + (data.title || "Producto") + "' onerror=\"this.parentElement.querySelector('.card-placeholder') && (this.parentElement.querySelector('.card-placeholder').style.display='flex')\" style='display:block;' />"
-              : "") +
-            "<div class='card-placeholder' " + (imagen ? "style='display:none;'" : "") + ">Sin imagen</div>" +
-            "<div class='card-body'>" +
+        let statusClass = "stock-available", statusText = "✓ En Stock";
+        if (stock === 0)      { statusClass = "stock-unavailable"; statusText = "✗ Sin Stock"; }
+        else if (stock <= 5)  { statusClass = "stock-low";         statusText = "⚠ Pocas unidades"; }
+
+        tarjeta.innerHTML =
+          (imagen
+            ? "<img src='" + imagen + "' alt='" + (data.title || "Producto") + "' />"
+            : "") +
+          "<div class='card-placeholder'" + (imagen ? " style='display:none;'" : "") + ">Sin imagen</div>" +
+          "<div class='card-body'>" +
             "<h4>" + (data.title || "Sin nombre") + "</h4>" +
             "<p class='card-description'>" + (data.content || "") + "</p>" +
-            "<div class='card-info'>" +
-            "<span>🏷️ <strong>" + (data.categoria || "-") + "</strong></span>" +
-            "</div>" +
-            "<div class='card-info'>" +
-            "<span>👥 " + (data.compradors || 0) + " comprador" + ((data.compradors || 0) !== 1 ? "es" : "") + "</span>" +
-            "</div>" +
+            "<div class='card-info'><span>🏷️ <strong>" + (data.categoria || "-") + "</strong></span></div>" +
+            "<div class='card-info'><span>👥 " + (data.compradors || 0) + " comprador" + ((data.compradors || 0) !== 1 ? "es" : "") + "</span></div>" +
             "<div class='card-footer'>" +
-            "<div class='stock-status " + stockStatusClass + "'>" + stockStatusText + "</div>" +
-            "<p class='price'>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</p>" +
-            "<div class='card-actions'>" +
-            "<input type='number' id='qty-" + doc.id + "' min='1' max='" + (stock > 0 ? stock : 1) + "' value='1' " + (stock <= 0 ? "disabled" : "") + " />" +
-            "<button type='button' class='btn-green' onclick=\"comprarProducte('" + doc.id + "')\" " + (stock <= 0 ? "disabled" : "") + ">" +
-            (stock > 0 ? "Comprar" : "Sin stock") +
-            "</button>" +
+              "<div class='stock-status " + statusClass + "'>" + statusText + "</div>" +
+              "<p class='price'>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</p>" +
+              "<div class='card-actions'>" +
+                "<input type='number' id='qty-" + doc.id + "' min='1' max='" + (stock > 0 ? stock : 1) + "' value='1'" + (stock <= 0 ? " disabled" : "") + " />" +
+                "<button type='button' class='btn-green' onclick=\"comprarProducte('" + doc.id + "')\"" + (stock <= 0 ? " disabled" : "") + ">" +
+                  (stock > 0 ? "Comprar" : "Sin stock") +
+                "</button>" +
+              "</div>" +
             "</div>" +
-            "</div>" +
-            "</div>";
+          "</div>";
 
-          contenedor.appendChild(tarjeta);
-        });
+        return tarjeta;
       }
 
       function filtrarProductos(termino) {
-        const contenedor = el("productesCataleg");
+        const contenedor  = el("productesCataleg");
         const termBusqueda = termino.toLowerCase().trim();
 
-        if (termBusqueda === "") {
-          cargarCatalogo();
-          return;
-        }
+        if (termBusqueda === "") { cargarCatalogo(); return; }
 
         contenedor.innerHTML = "";
         let encontrados = 0;
 
         productosOriginales.forEach(function (doc) {
-          const data = doc.data();
-          const titulo = (data.title || "").toLowerCase();
-          const descripcion = (data.content || "").toLowerCase();
-          const categoria = (data.categoria || "").toLowerCase();
+          const data     = doc.data();
+          const titulo   = (data.title || "").toLowerCase();
+          const desc     = (data.content || "").toLowerCase();
+          const categoria= (data.categoria || "").toLowerCase();
 
-          if (titulo.includes(termBusqueda) || descripcion.includes(termBusqueda) || categoria.includes(termBusqueda)) {
+          if (titulo.includes(termBusqueda) || desc.includes(termBusqueda) || categoria.includes(termBusqueda)) {
             encontrados++;
-            const stock = data.stock != null ? Number(data.stock) : 0;
-            const imagen = data.imatge ? data.imatge : "";
-            const tarjeta = document.createElement("div");
-            tarjeta.className = "card";
-
-            let stockStatusClass = "stock-available";
-            let stockStatusText = "✓ En Stock";
-            if (stock === 0) {
-              stockStatusClass = "stock-unavailable";
-              stockStatusText = "✗ Sin Stock";
-            } else if (stock <= 5) {
-              stockStatusClass = "stock-low";
-              stockStatusText = "⚠ Pocas unidades";
-            }
-
-            tarjeta.innerHTML =
-              (imagen
-                ? "<img src='" + imagen + "' alt='" + (data.title || "Producto") + "' onerror=\"this.parentElement.querySelector('.card-placeholder') && (this.parentElement.querySelector('.card-placeholder').style.display='flex')\" style='display:block;' />"
-                : "") +
-              "<div class='card-placeholder' " + (imagen ? "style='display:none;'" : "") + ">Sin imagen</div>" +
-              "<div class='card-body'>" +
-              "<h4>" + (data.title || "Sin nombre") + "</h4>" +
-              "<p class='card-description'>" + (data.content || "") + "</p>" +
-              "<div class='card-info'>" +
-              "<span>🏷️ <strong>" + (data.categoria || "-") + "</strong></span>" +
-              "</div>" +
-              "<div class='card-info'>" +
-              "<span>👥 " + (data.compradors || 0) + " comprador" + ((data.compradors || 0) !== 1 ? "es" : "") + "</span>" +
-              "</div>" +
-              "<div class='card-footer'>" +
-              "<div class='stock-status " + stockStatusClass + "'>" + stockStatusText + "</div>" +
-              "<p class='price'>" + (data.preu != null ? Number(data.preu).toFixed(2) + " EUR" : "-") + "</p>" +
-              "<div class='card-actions'>" +
-              "<input type='number' id='qty-" + doc.id + "' min='1' max='" + (stock > 0 ? stock : 1) + "' value='1' " + (stock <= 0 ? "disabled" : "") + " />" +
-              "<button type='button' class='btn-green' onclick=\"comprarProducte('" + doc.id + "')\" " + (stock <= 0 ? "disabled" : "") + ">" +
-              (stock > 0 ? "Comprar" : "Sin stock") +
-              "</button>" +
-              "</div>" +
-              "</div>" +
-              "</div>";
-
-            contenedor.appendChild(tarjeta);
+            contenedor.appendChild(crearTarjeta(doc));
           }
         });
 
@@ -1137,41 +1220,27 @@
         }
       }
 
+      /* ══════════════════════════════════════
+         GUARDAR / EDITAR / ELIMINAR PRODUCTO
+      ══════════════════════════════════════ */
       async function guardarProducto() {
-        const id = el("prodId").value;
-        const titulo = el("prodTitol").value.trim();
+        const id          = el("prodId").value;
+        const titulo      = el("prodTitol").value.trim();
         const descripcion = el("prodDescripcio").value.trim();
-        const precio = parseFloat(el("prodPreu").value);
-        const stock = parseInt(el("prodStock").value, 10);
-        const categoria = el("prodCategoria").value.trim();
+        const precio      = parseFloat(el("prodPreu").value);
+        const stock       = parseInt(el("prodStock").value, 10);
+        const categoria   = el("prodCategoria").value.trim();
         const compradores = parseInt(el("prodCompradors").value, 10) || 0;
-        const imagen = el("prodImatge").value.trim();
+        const imagen      = el("prodImatge").value.trim();
 
-        if (!titulo) {
-          mostrarAlerta("El nombre del producto es obligatorio", "error");
-          return;
-        }
-
-        if (isNaN(precio) || precio < 0) {
-          mostrarAlerta("Introduce un precio válido", "error");
-          return;
-        }
-
-        if (isNaN(stock) || stock < 0) {
-          mostrarAlerta("Introduce un stock válido", "error");
-          return;
-        }
+        if (!titulo)                          { mostrarAlerta("El nombre del producto es obligatorio", "error"); return; }
+        if (isNaN(precio) || precio < 0)      { mostrarAlerta("Introduce un precio válido", "error"); return; }
+        if (isNaN(stock)  || stock < 0)       { mostrarAlerta("Introduce un stock válido", "error"); return; }
 
         const producto = {
-          title: titulo,
-          content: descripcion,
-          preu: precio,
-          stock: stock,
-          categoria: categoria,
-          compradors: compradores,
-          imatge: imagen,
-          empresaUid: uidActual,
-          ownerUid: uidActual
+          title: titulo, content: descripcion, preu: precio,
+          stock: stock,  categoria: categoria,  compradors: compradores,
+          imatge: imagen, empresaUid: uidActual, ownerUid: uidActual
         };
 
         try {
@@ -1182,7 +1251,6 @@
             await add(productes, producto);
             mostrarAlerta("Producto guardado correctamente", "ok");
           }
-
           limpiarFormularioProducto();
           await cargarMisProductos();
           await cargarCatalogo();
@@ -1193,47 +1261,37 @@
 
       async function editarProducte(id) {
         const snap = await selectById(productes, id);
-        if (!snap.exists) {
-          return;
-        }
-
+        if (!snap.exists) return;
         const data = snap.data();
 
         if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
-          mostrarAlerta("Solo puedes editar tus productos", "error");
-          return;
+          mostrarAlerta("Solo puedes editar tus productos", "error"); return;
         }
 
-        el("prodId").value = id;
-        el("prodTitol").value = data.title || "";
+        el("prodId").value         = id;
+        el("prodTitol").value      = data.title || "";
         el("prodDescripcio").value = data.content || "";
-        el("prodPreu").value = data.preu != null ? data.preu : "";
-        el("prodStock").value = data.stock != null ? data.stock : "";
-        el("prodCategoria").value = data.categoria || "";
+        el("prodPreu").value       = data.preu != null ? data.preu : "";
+        el("prodStock").value      = data.stock != null ? data.stock : "";
+        el("prodCategoria").value  = data.categoria || "";
         el("prodCompradors").value = data.compradors || 0;
-        el("prodImatge").value = data.imatge || "";
-        el("empresaFormTitol").textContent = "Editar Producto";
-        el("cancelarEdicio").style.display = "inline-block";
+        el("prodImatge").value     = data.imatge || "";
+        el("empresaFormTitol").textContent    = "Editar Producto";
+        el("cancelarEdicio").style.display    = "inline-block";
         el("productFormContainer").classList.add("visible");
         el("productFormContainer").scrollIntoView({ behavior: "smooth" });
       }
 
       async function eliminarProducte(id) {
         const snap = await selectById(productes, id);
-        if (!snap.exists) {
-          return;
-        }
-
+        if (!snap.exists) return;
         const data = snap.data();
 
         if (data.empresaUid !== uidActual && data.ownerUid !== uidActual) {
-          mostrarAlerta("Solo puedes eliminar tus productos", "error");
-          return;
+          mostrarAlerta("Solo puedes eliminar tus productos", "error"); return;
         }
 
-        if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-          return;
-        }
+        if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
 
         try {
           await deleteById(productes, id);
@@ -1245,81 +1303,65 @@
         }
       }
 
+      /* ══════════════════════════════════════
+         COMPRAR
+      ══════════════════════════════════════ */
       function calcularDistancia(lat1, lng1, lat2, lng2) {
-        const R = 6371;
+        const R    = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLng = (lng2 - lng1) * Math.PI / 180;
-        const a = 
+        const a    =
           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
           Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       }
 
       function obtenerPuntoMasCercano(ciudadUsuario) {
-        const ciudadNormalizada = (ciudadUsuario || "").toLowerCase().trim();
-        
-        let puntoEncontrado = puntosRecogida.find(p => p.ciudad.toLowerCase() === ciudadNormalizada);
-        
-        if (puntoEncontrado) {
-          return puntoEncontrado;
-        }
+        const c = (ciudadUsuario || "").toLowerCase().trim();
+        const directo = puntosRecogida.find(p => p.ciudad.toLowerCase() === c);
+        if (directo) return directo;
 
-        const ciudadesUE = {
-          "madrid": { lat: 40.4168, lng: -3.7038 },
-          "barcelona": { lat: 41.3874, lng: 2.1686 },
-          "valencia": { lat: 39.4699, lng: -0.3763 },
-          "sevilla": { lat: 37.3891, lng: -5.9845 },
-          "malaga": { lat: 36.7213, lng: -4.4213 },
-          "bilbao": { lat: 43.2627, lng: -2.9355 },
-          "zaragoza": { lat: 41.6488, lng: -0.8891 },
-          "palma": { lat: 39.5696, lng: 2.6502 }
+        const coords = {
+          "madrid":    { lat: 40.4168, lng: -3.7038 },
+          "barcelona": { lat: 41.3874, lng:  2.1686 },
+          "valencia":  { lat: 39.4699, lng: -0.3763 },
+          "sevilla":   { lat: 37.3891, lng: -5.9845 },
+          "malaga":    { lat: 36.7213, lng: -4.4213 },
+          "bilbao":    { lat: 43.2627, lng: -2.9355 },
+          "zaragoza":  { lat: 41.6488, lng: -0.8891 },
+          "palma":     { lat: 39.5696, lng:  2.6502 }
         };
 
-        let coordenadas = ciudadesUE[ciudadNormalizada];
-        
-        if (!coordenadas) {
-          return puntosRecogida[0];
-        }
+        const coord = coords[c];
+        if (!coord) return puntosRecogida[0];
 
-        let puntoMasCercano = puntosRecogida[0];
-        let distanciaMinima = calcularDistancia(coordenadas.lat, coordenadas.lng, puntoMasCercano.lat, puntoMasCercano.lng);
+        let mejor = puntosRecogida[0];
+        let minDist = calcularDistancia(coord.lat, coord.lng, mejor.lat, mejor.lng);
 
         for (let i = 1; i < puntosRecogida.length; i++) {
-          const distancia = calcularDistancia(coordenadas.lat, coordenadas.lng, puntosRecogida[i].lat, puntosRecogida[i].lng);
-          if (distancia < distanciaMinima) {
-            distanciaMinima = distancia;
-            puntoMasCercano = puntosRecogida[i];
-          }
+          const d = calcularDistancia(coord.lat, coord.lng, puntosRecogida[i].lat, puntosRecogida[i].lng);
+          if (d < minDist) { minDist = d; mejor = puntosRecogida[i]; }
         }
-
-        return puntoMasCercano;
+        return mejor;
       }
 
       async function comprarProducte(id) {
         const inputCantidad = el("qty-" + id);
-        if (!inputCantidad) {
-          return;
-        }
+        if (!inputCantidad) return;
 
         const cantidad = parseInt(inputCantidad.value, 10);
-
-        if (isNaN(cantidad) || cantidad < 1) {
-          mostrarAlerta("Introduce una cantidad válida", "error");
-          return;
-        }
+        if (isNaN(cantidad) || cantidad < 1) { mostrarAlerta("Introduce una cantidad válida", "error"); return; }
 
         try {
           const snap = await selectById(productes, id);
-
           if (!snap.exists) {
             mostrarAlerta("Ese producto ya no existe", "error");
             await cargarCatalogo();
             return;
           }
 
-          const data = snap.data();
+          const data        = snap.data();
           const stockActual = data.stock != null ? Number(data.stock) : 0;
 
           if (cantidad > stockActual) {
@@ -1329,22 +1371,19 @@
             return;
           }
 
-          const stockNuevo = stockActual - cantidad;
-          const compradoresNuevos = (Number(data.compradors) || 0) + 1;
-
           await updateById(productes, id, {
-            stock: stockNuevo,
-            compradors: compradoresNuevos
+            stock:      stockActual - cantidad,
+            compradors: (Number(data.compradors) || 0) + 1
           });
 
-          const usuarioSnap = await usuaris.doc(uidActual).get();
-          const userData = usuarioSnap.exists ? usuarioSnap.data() : {};
+          const usuarioSnap   = await usuaris.doc(uidActual).get();
+          const userData      = usuarioSnap.exists ? usuarioSnap.data() : {};
           const puntoMasCercano = obtenerPuntoMasCercano(userData.ciutat || "");
 
           sessionStorage.setItem("repiaCompra", JSON.stringify({
             producto: data.title || "Producto",
             cantidad: cantidad,
-            stockRestante: stockNuevo,
+            stockRestante: stockActual - cantidad,
             puntoRecogida: puntoMasCercano
           }));
 
@@ -1352,117 +1391,73 @@
           await cargarCatalogo();
           mostrarAlerta("¡Compra realizada! Te llevamos a los puntos de recogida", "ok");
 
-          setTimeout(function () {
-            window.location.href = "punts_recollida.html";
-          }, 1700);
+          setTimeout(function () { window.location.href = "punts_recollida.html"; }, 1700);
         } catch (error) {
           mostrarAlerta("No se pudo completar la compra", "error");
         }
       }
 
+      /* ══════════════════════════════════════
+         AUTH
+      ══════════════════════════════════════ */
       async function cargarUsuario(uid) {
         let nombre = "";
-
         try {
           const snap = await usuaris.doc(uid).get();
           if (snap.exists) {
             const data = snap.data();
             nombre = data.username || data.email || "";
           }
-        } catch (error) {
-          nombre = "";
-        }
+        } catch (e) { nombre = ""; }
 
         if (!nombre && auth.currentUser) {
           nombre = auth.currentUser.displayName || auth.currentUser.email || "";
         }
-
         return nombre;
       }
 
       async function entrarConGoogle() {
-        if (!authDisponible()) {
-          mostrarAlerta("Abre la app con http://localhost o https", "error");
-          return;
-        }
-
+        if (!authDisponible()) { mostrarAlerta("Abre la app con http://localhost o https", "error"); return; }
         try {
           await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        } catch (error) {
-          mostrarAlerta(textoErrorAuth(error), "error");
-        }
+        } catch (error) { mostrarAlerta(textoErrorAuth(error), "error"); }
       }
 
       async function entrar() {
-        if (!authDisponible()) {
-          mostrarAlerta("Abre la app con http://localhost o https", "error");
-          return;
-        }
-
-        const email = el("loginEmail").value.trim();
+        if (!authDisponible()) { mostrarAlerta("Abre la app con http://localhost o https", "error"); return; }
+        const email    = el("loginEmail").value.trim();
         const password = el("loginPassword").value;
-
         try {
           await auth.signInWithEmailAndPassword(email, password);
-        } catch (error) {
-          mostrarAlerta(textoErrorAuth(error), "error");
-        }
+        } catch (error) { mostrarAlerta(textoErrorAuth(error), "error"); }
       }
 
       async function registrar() {
-        if (!authDisponible()) {
-          mostrarAlerta("Abre la app con http://localhost o https", "error");
-          return;
-        }
+        if (!authDisponible()) { mostrarAlerta("Abre la app con http://localhost o https", "error"); return; }
 
-        const email = el("signupEmail").value.trim();
-        const username = el("signupUsername").value.trim();
-        const password = el("signupPassword").value;
-        const passwordConfirm = el("signupPasswordConfirm").value;
-        const adreca = el("signupAdreca").value.trim();
-        const ciutat = el("signupCiutat").value.trim();
-        const telefon = el("signupTelefon").value.trim();
+        const email          = el("signupEmail").value.trim();
+        const username       = el("signupUsername").value.trim();
+        const password       = el("signupPassword").value;
+        const passwordConfirm= el("signupPasswordConfirm").value;
+        const adreca         = el("signupAdreca").value.trim();
+        const ciutat         = el("signupCiutat").value.trim();
+        const telefon        = el("signupTelefon").value.trim();
 
-        if (!email || email.indexOf("@") < 1) {
-          mostrarAlerta("Correo incorrecto", "error");
-          return;
-        }
-
-        if (!username || username.length < 3) {
-          mostrarAlerta("El nombre debe tener al menos 3 caracteres", "error");
-          return;
-        }
-
-        if (!password || password.length < 8) {
-          mostrarAlerta("La contraseña debe tener al menos 8 caracteres", "error");
-          return;
-        }
-
-        if (password !== passwordConfirm) {
-          mostrarAlerta("Las contraseñas no coinciden", "error");
-          return;
-        }
-
-        if (!adreca || !ciutat || !telefon) {
-          mostrarAlerta("Completa dirección, ciudad y teléfono", "error");
-          return;
-        }
+        if (!email || email.indexOf("@") < 1)    { mostrarAlerta("Correo incorrecto", "error"); return; }
+        if (!username || username.length < 3)    { mostrarAlerta("El nombre debe tener al menos 3 caracteres", "error"); return; }
+        if (!password || password.length < 8)    { mostrarAlerta("La contraseña debe tener al menos 8 caracteres", "error"); return; }
+        if (password !== passwordConfirm)         { mostrarAlerta("Las contraseñas no coinciden", "error"); return; }
+        if (!adreca || !ciutat || !telefon)       { mostrarAlerta("Completa dirección, ciudad y teléfono", "error"); return; }
 
         creandoUsuario = true;
-
         try {
-          await auth.createUserWithEmailAndPassword(email, password);
-
-          await usuaris.doc(auth.currentUser.uid).set({
-            username: username,
-            email: email,
-            adreca: adreca,
-            ciutat: ciutat,
-            telefon: telefon,
-            rol: "usuari"
+          const cred = await auth.createUserWithEmailAndPassword(email, password);
+          await usuaris.doc(cred.user.uid).set({
+            username, email, adreca, ciutat, telefon, rol: "usuari"
           });
 
           creandoUsuario = false;
+          uidActual = cred.user.uid;
           mostrarUsuario(username);
           limpiarFormularioProducto();
           await mostrarAplicacion();
@@ -1473,6 +1468,9 @@
         }
       }
 
+      /* ══════════════════════════════════════
+         EVENT LISTENERS
+      ══════════════════════════════════════ */
       el("login").addEventListener("click", entrar);
       el("loginGoogle").addEventListener("click", entrarConGoogle);
       el("newUser").addEventListener("click", mostrarRegistro);
@@ -1497,21 +1495,19 @@
 
       el("btnLogout").addEventListener("click", async function () {
         sessionStorage.removeItem("repiaCompra");
-
-        try {
-          await auth.signOut();
-        } catch (error) {
-        }
-
+        try { await auth.signOut(); } catch (e) {}
         uidActual = null;
         limpiarFormularioProducto();
         mostrarLogin();
       });
 
-      window.editarProducte = editarProducte;
-      window.eliminarProducte = eliminarProducte;
+      window.editarProducte  = editarProducte;
+      window.eliminarProducte= eliminarProducte;
       window.comprarProducte = comprarProducte;
 
+      /* ══════════════════════════════════════
+         INICIAR
+      ══════════════════════════════════════ */
       if (!authDisponible()) {
         setTimeout(function () {
           mostrarAlerta("Firebase Auth necesita abrirse con http://localhost o https", "error");
@@ -1526,14 +1522,8 @@
             mostrarLogin();
             return;
           }
-
-          if (creandoUsuario) {
-            return;
-          }
-
-          if (uidActual === user.uid) {
-            return;
-          }
+          if (creandoUsuario)       return;
+          if (uidActual === user.uid) return;
 
           uidActual = user.uid;
           limpiarFormularioProducto();
