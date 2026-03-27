@@ -1451,9 +1451,9 @@
         creandoUsuario = true;
 
         try {
-          const cred = await auth.createUserWithEmailAndPassword(email, password);
+          await auth.createUserWithEmailAndPassword(email, password);
 
-          await usuaris.doc(cred.user.uid).set({
+          await usuaris.doc(auth.currentUser.uid).set({
             username: username,
             email: email,
             adreca: adreca,
@@ -1463,7 +1463,6 @@
           });
 
           creandoUsuario = false;
-          uidActual = cred.user.uid;
           mostrarUsuario(username);
           limpiarFormularioProducto();
           await mostrarAplicacion();
