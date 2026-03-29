@@ -713,6 +713,20 @@
         transform: rotate(15deg);
         opacity: 1;
       }
+        body.letra-grande,
+        body.letra-grande *,
+        body.letra-grande header,
+        body.letra-grande header *,
+        body.letra-grande .panel,
+        body.letra-grande .card,
+        body.letra-grande input,
+        body.letra-grande textarea,
+        body.letra-grande button,
+        body.letra-grande label,
+        body.letra-grande th,
+        body.letra-grande td {
+          font-size: 1.2em !important;
+        }
 
       /* ── RESPONSIVE ── */
       @media (max-width: 768px) {
@@ -974,21 +988,25 @@
 
       /* ══════════════════════════════════════
          TAMAÑO DE FUENTE
+
       ══════════════════════════════════════ */
       let letraGrande = false;
 
       function cambiarFuente() {
         letraGrande = !letraGrande;
         if (letraGrande) {
-          document.body.style.fontSize = "18px";
+          document.body.classList.add("letra-grande");
           el("fontText").textContent = "Reducir letra";
           localStorage.setItem("letraGrande", "true");
         } else {
-          document.body.style.fontSize = "";
+          document.body.classList.remove("letra-grande");
           el("fontText").textContent = "Agrandar letra";
           localStorage.setItem("letraGrande", "false");
         }
       }
+
+       
+      
 
       /* ══════════════════════════════════════
          CARGAR PREFERENCIAS AL INICIO
@@ -1003,7 +1021,7 @@
 
         if (fuenteGuardada === "true") {
           letraGrande = true;
-          document.body.style.fontSize = "18px";
+          document.body.classList.add("letra-grande");
           el("fontText").textContent = "Reducir letra";
         }
       });
